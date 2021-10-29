@@ -1,0 +1,97 @@
+//
+//  TvPopularCell.swift
+//  TheMovieDB
+//
+//  Created by user on 28.10.2021.
+//
+
+import UIKit
+
+final class TvPopularCell: UITableViewCell {
+    
+    static let identifier = "TvPopularCell"
+    
+    var tvPopulars: [TvPopular] = .init() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    private let titileLabel: UILabel = {
+        $0.font = .init(.systemFont(ofSize: 24, weight: .bold))
+        $0.textColor =  .black
+        $0.numberOfLines = 1
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "Популярные сериалы"
+        return $0
+    } (UILabel())
+    
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(TvPopularItem.self, forCellWithReuseIdentifier: TvPopularItem.identifier)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.showsHorizontalScrollIndicator = false
+        cv.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return cv
+    }()
+    
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configure()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configure() {
+        
+        contentView.addSubview(titileLabel)
+        NSLayoutConstraint.activate([
+            titileLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            titileLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titileLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titileLabel.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        contentView.addSubview(collectionView)
+        collectionView.backgroundColor = .clear
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: titileLabel.bottomAnchor, constant: 8),
+            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+}
+
+extension TvPopularCell: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        tvPopulars.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TvPopularItem.identifier, for: indexPath) as? TvPopularItem else { fatalError() }
+        let tvPopular = tvPopulars[indexPath.item]
+        cell.configure(with: tvPopular)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard indexPath.row == tvPopulars.count - 1 else { return }
+        /// добивлять page + 1
+    }
+}
+
+extension TvPopularCell: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2, height: collectionView.frame.height)
+    }
+}
