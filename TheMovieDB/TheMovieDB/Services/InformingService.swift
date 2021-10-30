@@ -21,7 +21,6 @@ final class InformingService {
 //        window.isHidden = false
 //        window.makeKeyAndVisible()
 
-        
     }
 
 }
