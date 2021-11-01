@@ -25,7 +25,7 @@ final class TvPopularItem: UICollectionViewCell {
         $0.contentMode = .scaleToFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    } (UIImageView())
+    }(UIImageView())
     
     override init(frame: CGRect) {
         super.init(frame: frame)

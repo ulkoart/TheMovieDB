@@ -20,7 +20,7 @@ class SearchPresenter: SearchPresenterProtocol {
     var interactor: SearchInteractorProtocol?
     
     func searchMovie(name query: String) {
-        interactor?.retrieveSearchMovie(query:query)
+        interactor?.retrieveSearchMovie(query: query)
     }
     
     func searchMovieSuccess(movies: [SearchMovie]) {

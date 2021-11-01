@@ -14,9 +14,9 @@ protocol HomeViewControllerProtocol: AnyObject {
     var nowPlaying: [NowPlayingMovie] { get set }
     var tvPopular: [TvPopular] { get set }
     
-    func showLoadView() -> Void
-    func hideLoadView() -> Void
-    func reloadRows() -> Void
+    func showLoadView()
+    func hideLoadView()
+    func reloadRows()
 }
 
 final class HomeViewController: UIViewController {
@@ -36,11 +36,11 @@ final class HomeViewController: UIViewController {
         $0.register(NowPlayingCell.self, forCellReuseIdentifier: NowPlayingCell.identifier)
         $0.register(TvPopularCell.self, forCellReuseIdentifier: TvPopularCell.identifier)
         return $0
-    } (UITableView())
+    }(UITableView())
     
     private let loadView: LoadView = {
         return $0
-    } (LoadView())
+    }(LoadView())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,11 +81,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             cell.movies = self.trends
             return cell
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: NowPlayingCell.identifier, for: indexPath) as? NowPlayingCell else { fatalError() }
+            guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: NowPlayingCell.identifier, for: indexPath
+            ) as? NowPlayingCell else { fatalError() }
             cell.nowPlaying = self.nowPlaying
             return cell
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: TvPopularCell.identifier, for: indexPath) as? TvPopularCell else { fatalError() }
+            guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: TvPopularCell.identifier, for: indexPath
+            ) as? TvPopularCell else { fatalError() }
             cell.tvPopulars = self.tvPopular
             return cell
         default:

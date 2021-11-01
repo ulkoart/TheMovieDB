@@ -19,7 +19,7 @@ final class SearchInteractor: SearchInteractorProtocol {
     private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
     
     func retrieveSearchMovie(query: String) {
-        service.searchMovie(query: query) { [weak self] movies, error in
+        service.searchMovie(query: query) { [weak self] movies, _ in
             self?.presenter?.searchMovieSuccess(movies: movies)
         }
     }

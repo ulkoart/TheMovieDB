@@ -24,19 +24,18 @@ final class TvPopularCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Популярные сериалы"
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(TvPopularItem.self, forCellWithReuseIdentifier: TvPopularItem.identifier)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-        return cv
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(TvPopularItem.self, forCellWithReuseIdentifier: TvPopularItem.identifier)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.showsHorizontalScrollIndicator = false
+        collection.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return collection
     }()
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -77,7 +76,9 @@ extension TvPopularCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TvPopularItem.identifier, for: indexPath) as? TvPopularItem else { fatalError() }
+        guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TvPopularItem.identifier, for: indexPath
+        ) as? TvPopularItem else { fatalError() }
         let tvPopular = tvPopulars[indexPath.item]
         cell.configure(with: tvPopular)
         return cell
@@ -85,7 +86,7 @@ extension TvPopularCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == tvPopulars.count - 1 else { return }
-        /// добивлять page + 1
+        // добивлять page + 1
     }
 }
 
