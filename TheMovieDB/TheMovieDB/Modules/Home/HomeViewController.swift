@@ -48,6 +48,11 @@ final class HomeViewController: UIViewController {
         presenter?.loadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+    }
+    
     private func configure() {
         view.backgroundColor = .white
         
@@ -79,6 +84,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendsCell.identifier, for: indexPath) as? TrendsCell else { fatalError() }
             cell.movies = self.trends
+            cell.delegate = self
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(
@@ -135,5 +141,11 @@ extension HomeViewController: HomeViewControllerProtocol {
         tableView.reloadRows(at: [trendsIndexPath], with: .left)
         tableView.reloadRows(at: [nowPlayingIndexPath], with: .right)
         tableView.reloadRows(at: [tvPopularIndexPath], with: .left)
+    }
+}
+
+extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
+    func movieTrendDidSelect(with movie: Movie) {
+        presenter?.showMovie(movie: movie)
     }
 }

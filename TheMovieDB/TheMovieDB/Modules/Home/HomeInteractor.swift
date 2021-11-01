@@ -31,7 +31,7 @@ final class HomeInteractor: HomeInteractorProtocol {
             dispatchGroup.leave()
             trends = trendsFromApi
         }
-        
+
         dispatchGroup.enter()
         service.getNowPlaying { nowPlayingFromApi, _ in
             dispatchGroup.leave()

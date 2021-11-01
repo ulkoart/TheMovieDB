@@ -8,8 +8,8 @@
 import Foundation
 
 enum MediaType: String, Codable {
-    case movie
-    case tvSerial
+    case movie = "movie"
+    case tvSerial = "tv"
     
     var ruValue: String {
         switch self {

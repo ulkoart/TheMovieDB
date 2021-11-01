@@ -100,7 +100,7 @@ final class TMDBNetworkService {
     private func GETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
+
         let handler: URLSessionHandler = { data, _, _ in
             guard let data = data else { fatalError() }
             
@@ -112,7 +112,7 @@ final class TMDBNetworkService {
             }
         }
         let task = session.dataTask(with: url, completionHandler: handler)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) {
             task.resume()
         }
     }
