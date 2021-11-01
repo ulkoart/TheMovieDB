@@ -101,7 +101,7 @@ final class TMDBNetworkService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let handler: URLSessionHandler = { data, response, error in
+        let handler: URLSessionHandler = { data, _, _ in
             guard let data = data else { fatalError() }
             
             do {
@@ -122,7 +122,7 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func getTrending(completion: @escaping GetTrendingResponse) {
         guard let url = Endpoints.getTrending.url else { return }
         
-        GETRequest(url: url, responseType: TrendingResponse.self) { trendingResponse, error in
+        GETRequest(url: url, responseType: TrendingResponse.self) { trendingResponse, _ in
             guard let trendingResponse = trendingResponse else { fatalError() }
             completion(trendingResponse.results, nil)
         }
@@ -131,7 +131,7 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func getNowPlaying(completion: @escaping GetNowPlayingResponse) {
         guard let url = Endpoints.getNowPlaying.url else { return }
         
-        GETRequest(url: url, responseType: NowPlayingResponse.self) { nowPlayingResponse, error in
+        GETRequest(url: url, responseType: NowPlayingResponse.self) { nowPlayingResponse, _ in
             guard let nowPlayingResponse = nowPlayingResponse else { fatalError() }
             completion(nowPlayingResponse.results, nil)
         }
@@ -140,7 +140,7 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func getTvPopular(completion: @escaping GetTvPopularResponse) {
         guard let url = Endpoints.getTvPopular.url else { return }
         
-        GETRequest(url: url, responseType: TvPopularResponse.self) { tvPopularResponse, error in
+        GETRequest(url: url, responseType: TvPopularResponse.self) { tvPopularResponse, _ in
             guard let tvPopularResponse = tvPopularResponse else { fatalError() }
             completion(tvPopularResponse.results, nil)
         }
@@ -149,7 +149,7 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func searchMovie(query: String, completion: @escaping GetSearchMovieResponse) {
         guard let url = Endpoints.searchMovie(query).url else { return }
         
-        GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, error in
+        GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
             guard let searchMovieResponse = searchMovieResponse else { fatalError() }
             completion(searchMovieResponse.results, nil)
         }

@@ -31,7 +31,7 @@ final class ImageNetworkService: ImageNetworkServiceProtocol {
             return
         }
         
-        let handler: URLSessionHandler = { [weak self] data, response, error in
+        let handler: URLSessionHandler = { [weak self] data, _, _ in
             guard
                 let data = data,
                 let image = UIImage(data: data)

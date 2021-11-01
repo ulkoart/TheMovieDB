@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 final class TrendsCell: UITableViewCell {
     
     static let identifier = "TrendsCell"
@@ -26,17 +24,17 @@ final class TrendsCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Тренды этой недели"
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(TrendItem.self, forCellWithReuseIdentifier: TrendItem.identifier)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.isPagingEnabled = true
-        return cv
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(TrendItem.self, forCellWithReuseIdentifier: TrendItem.identifier)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.showsHorizontalScrollIndicator = false
+        collection.isPagingEnabled = true
+        return collection
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -77,7 +75,9 @@ extension TrendsCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrendItem.identifier, for: indexPath) as? TrendItem else { fatalError() }
+        guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TrendItem.identifier, for: indexPath
+        ) as? TrendItem else { fatalError() }
         let movie = movies[indexPath.item]
         cell.configure(with: movie)
         return cell

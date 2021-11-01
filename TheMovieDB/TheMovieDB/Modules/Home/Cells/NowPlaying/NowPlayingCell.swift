@@ -24,17 +24,17 @@ class NowPlayingCell: UITableViewCell {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Сейчас в кино"
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.register(NowPlayingItem.self, forCellWithReuseIdentifier: NowPlayingItem.identifier)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-        return cv
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collection.register(NowPlayingItem.self, forCellWithReuseIdentifier: NowPlayingItem.identifier)
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.showsHorizontalScrollIndicator = false
+        collection.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return collection
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -76,7 +76,9 @@ extension NowPlayingCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NowPlayingItem.identifier, for: indexPath) as? NowPlayingItem else { fatalError() }
+        guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: NowPlayingItem.identifier, for: indexPath
+        ) as? NowPlayingItem else { fatalError() }
         let nowPlayingMovie = nowPlaying[indexPath.item]
         cell.configure(with: nowPlayingMovie)
         return cell
@@ -84,7 +86,7 @@ extension NowPlayingCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == nowPlaying.count - 1 else { return }
-        /// добивлять page + 1
+        // добивлять page + 1
     }
 }
 

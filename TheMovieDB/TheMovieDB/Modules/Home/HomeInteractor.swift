@@ -27,19 +27,19 @@ final class HomeInteractor: HomeInteractorProtocol {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        service.getTrending { trendsFromApi, error in
+        service.getTrending { trendsFromApi, _ in
             dispatchGroup.leave()
             trends = trendsFromApi
         }
         
         dispatchGroup.enter()
-        service.getNowPlaying { nowPlayingFromApi, error in
+        service.getNowPlaying { nowPlayingFromApi, _ in
             dispatchGroup.leave()
             nowPlaying = nowPlayingFromApi
         }
         
         dispatchGroup.enter()
-        service.getTvPopular { tvPopularFromApi, error in
+        service.getTvPopular { tvPopularFromApi, _ in
             dispatchGroup.leave()
             tvPopular = tvPopularFromApi
         }

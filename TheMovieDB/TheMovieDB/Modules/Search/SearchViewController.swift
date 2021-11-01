@@ -29,7 +29,7 @@ final class SearchViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Пожалуйста, введите поисковый запрос..."
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let tableView: UITableView = {
         $0.allowsSelection = false
@@ -38,7 +38,7 @@ final class SearchViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return $0
-    } (UITableView())
+    }(UITableView())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +96,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard searchText != "" else { searchResults = []; return }
+        guard !searchText.isEmpty else { searchResults = []; return }
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
             self?.presenter?.searchMovie(name: searchText)

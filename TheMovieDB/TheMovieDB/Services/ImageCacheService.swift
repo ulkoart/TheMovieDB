@@ -9,7 +9,7 @@ import UIKit
 
 protocol ImageCacheServiceProtocol {
     func getCashedImage(url: String) -> UIImage?
-    func setCashedImage(image: UIImage, url: String) -> Void
+    func setCashedImage(image: UIImage, url: String)
 }
 
 class ImageCacheService: ImageCacheServiceProtocol {
@@ -26,7 +26,7 @@ class ImageCacheService: ImageCacheServiceProtocol {
         return imageCache.object(forKey: url as NSString)
     }
     
-    func setCashedImage(image: UIImage, url: String) -> Void {
+    func setCashedImage(image: UIImage, url: String) {
         self.imageCache.setObject(image, forKey: url as NSString)
     }
 }

@@ -25,7 +25,7 @@ final class TrendItem: UICollectionViewCell {
         $0.contentMode = .scaleToFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    } (UIImageView())
+    }(UIImageView())
     
     private let titileLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 28, weight: .semibold))
@@ -33,7 +33,7 @@ final class TrendItem: UICollectionViewCell {
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let voteAverageLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 15, weight: .bold))
@@ -45,7 +45,7 @@ final class TrendItem: UICollectionViewCell {
         $0.layer.cornerRadius = cornerRadius
         $0.layer.masksToBounds = true
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let mediaTypeLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 15, weight: .bold))
@@ -57,7 +57,7 @@ final class TrendItem: UICollectionViewCell {
         $0.layer.cornerRadius = cornerRadius
         $0.layer.masksToBounds = true
         return $0
-    } (UILabel())
+    }(UILabel())
     
     private let gradientView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +71,7 @@ final class TrendItem: UICollectionViewCell {
         $0.startPoint = CGPoint(x: 0, y: 0)
         $0.endPoint = CGPoint(x: 0, y: 1)
         return $0
-    } (CAGradientLayer())
+    }(CAGradientLayer())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
