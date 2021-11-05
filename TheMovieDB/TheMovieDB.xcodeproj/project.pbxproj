@@ -10,6 +10,7 @@
 		CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C127300EB900EC9D36 /* MovieRouter.swift */; };
 		CE36F3C427300F4900EC9D36 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C327300F4900EC9D36 /* MovieViewController.swift */; };
 		CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */; };
+		CE9CC49B27354D8600C471FD /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9CC49A27354D8600C471FD /* UIColor.swift */; };
 		CEB78AD32726D46900D7F0D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AD22726D46900D7F0D3 /* AppDelegate.swift */; };
 		CEB78AD52726D46900D7F0D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AD42726D46900D7F0D3 /* SceneDelegate.swift */; };
 		CEB78ADC2726D46C00D7F0D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEB78ADB2726D46C00D7F0D3 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 		CE36F3C127300EB900EC9D36 /* MovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRouter.swift; sourceTree = "<group>"; };
 		CE36F3C327300F4900EC9D36 /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StretchyTableHeader.swift; sourceTree = "<group>"; };
+		CE9CC49A27354D8600C471FD /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		CEB78ACF2726D46900D7F0D3 /* TheMovieDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheMovieDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB78AD22726D46900D7F0D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEB78AD42726D46900D7F0D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +99,14 @@
 				CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */,
 			);
 			path = Movie;
+			sourceTree = "<group>";
+		};
+		CE9CC49927354D5A00C471FD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CE9CC49A27354D8600C471FD /* UIColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CEB78AC62726D46900D7F0D3 = {
@@ -172,6 +182,7 @@
 		CEB78AEA2726D81A00D7F0D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CE9CC49927354D5A00C471FD /* Extensions */,
 				CEB78AEB2726D83E00D7F0D3 /* MainTabBarController.swift */,
 				CED0E4F427284F5C001DD0F0 /* LoadView.swift */,
 			);
@@ -376,6 +387,7 @@
 				CED0E526272AADEB001DD0F0 /* TvPopularCell.swift in Sources */,
 				CED0E534272AE707001DD0F0 /* SearchInteractor.swift in Sources */,
 				CEB78AD52726D46900D7F0D3 /* SceneDelegate.swift in Sources */,
+				CE9CC49B27354D8600C471FD /* UIColor.swift in Sources */,
 				CED0E532272AE217001DD0F0 /* SearchMovieResponse.swift in Sources */,
 				CEB78AF42726F8AF00D7F0D3 /* TrendsCell.swift in Sources */,
 				CED0E536272AE79B001DD0F0 /* SearchPresenter.swift in Sources */,

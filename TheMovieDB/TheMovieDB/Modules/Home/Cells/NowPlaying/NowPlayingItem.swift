@@ -18,7 +18,6 @@ final class NowPlayingItem: UICollectionViewCell {
         if let image = UIImage(named: "backdrop_placeholder") {
             $0.image = image
         }
-        
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = cornerRadius
         

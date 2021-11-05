@@ -14,7 +14,6 @@ class MainTabBarController: UITabBarController {
         viewControllers = [
             createController(viewController: HomeRouter.createModule(), title: "Киношечка 🎬", imageName: "home"),
             createController(viewController: SearchRouter.createModule(), title: "Поиск 🔎", imageName: "search")
-            
         ]
     }
     
