@@ -7,9 +7,16 @@
 
 import UIKit
 
+protocol NowPlayingCellLoadMoreDelegate: AnyObject {
+    func loadMoreNowPlaying()
+}
+
 class NowPlayingCell: UITableViewCell {
     
     static let identifier = "NowPlayingCell"
+    
+    /// делегат для подругзки новых страниц
+    var loadMoreDelegat: NowPlayingCellLoadMoreDelegate?
     
     var nowPlaying: [NowPlayingMovie] = .init() {
         didSet {
@@ -85,8 +92,8 @@ extension NowPlayingCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard indexPath.row == nowPlaying.count - 1 else { return }
-        // добивлять page + 1
+        guard indexPath.row == nowPlaying.count - 3 else { return }
+        loadMoreDelegat?.loadMoreNowPlaying()
     }
 }
 

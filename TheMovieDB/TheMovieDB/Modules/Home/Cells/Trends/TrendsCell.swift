@@ -15,6 +15,7 @@ final class TrendsCell: UITableViewCell {
     
     static let identifier = "TrendsCell"
     
+    /// делегат обрабатывающий нажатия на ячейку
     weak var delegate: TrendsCellDidSelectItemAtDelegate?
     
     var movies: [Movie] = .init() {

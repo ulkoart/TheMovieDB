@@ -17,6 +17,7 @@ protocol HomeViewControllerProtocol: AnyObject {
     func showLoadView()
     func hideLoadView()
     func reloadRows()
+    func addNowPlaying()
 }
 
 final class HomeViewController: UIViewController {
@@ -91,6 +92,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                     withIdentifier: NowPlayingCell.identifier, for: indexPath
             ) as? NowPlayingCell else { fatalError() }
             cell.nowPlaying = self.nowPlaying
+            cell.loadMoreDelegat = self
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(
@@ -142,10 +144,22 @@ extension HomeViewController: HomeViewControllerProtocol {
         tableView.reloadRows(at: [nowPlayingIndexPath], with: .right)
         tableView.reloadRows(at: [tvPopularIndexPath], with: .left)
     }
+    
+    func addNowPlaying() {
+        let nowPlayingIndexPath = IndexPath(row: 1, section: 0)
+        guard let nowPlaying = tableView.cellForRow(at: nowPlayingIndexPath) as? NowPlayingCell else { return }
+        nowPlaying.nowPlaying = self.nowPlaying
+    }
 }
 
 extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
     func movieTrendDidSelect(with movie: Movie) {
         presenter?.showMovie(movie: movie)
+    }
+}
+
+extension HomeViewController: NowPlayingCellLoadMoreDelegate {
+    func loadMoreNowPlaying() {
+        presenter?.loadMoreNowPlaying()
     }
 }

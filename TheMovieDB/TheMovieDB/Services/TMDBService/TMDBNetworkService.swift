@@ -21,7 +21,7 @@ protocol TMDBNetworkServiceProtocol {
     
     /// Получение списка фильмов идущих в кино в данный момент
     /// - Parameter completion: ([NowPlayingMovie], Error?) -> Void
-    func getNowPlaying(completion: @escaping GetNowPlayingResponse)
+    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse)
     
     /// Получение списка популярных сериалов
     /// - Parameter completion: ([TvPopular], Error?) -> Void
@@ -65,7 +65,7 @@ final class TMDBNetworkService {
         }
         
         case getTrending
-        case getNowPlaying
+        case getNowPlaying(Int)
         case getTvPopular
         case searchMovie(String)
         
@@ -76,9 +76,14 @@ final class TMDBNetworkService {
                 let path = "/trending/all/week"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
             
-            case .getNowPlaying:
+            case .getNowPlaying(let page):
+
+                let queryItems = [
+                    URLQueryItem(name: "page", value: "\(page)")
+                ] + Endpoints.defaultQueryItems
+                
                 let path = "/movie/now_playing"
-                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+                return makeUrl(path: path, queryItems: queryItems)
             
             case .getTvPopular:
                 let path = "/tv/popular"
@@ -108,6 +113,7 @@ final class TMDBNetworkService {
                 let decodedObject = try self.decoder.decode(responseType, from: data)
                 completion(decodedObject, nil)
             } catch {
+                print(url)
                 fatalError()
             }
         }
@@ -128,9 +134,9 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         }
     }
     
-    func getNowPlaying(completion: @escaping GetNowPlayingResponse) {
-        guard let url = Endpoints.getNowPlaying.url else { return }
-        
+    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse) {
+        guard let url = Endpoints.getNowPlaying(page).url else { return }
+  
         GETRequest(url: url, responseType: NowPlayingResponse.self) { nowPlayingResponse, _ in
             guard let nowPlayingResponse = nowPlayingResponse else { fatalError() }
             completion(nowPlayingResponse.results, nil)

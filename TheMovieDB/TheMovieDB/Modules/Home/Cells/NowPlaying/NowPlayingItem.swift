@@ -41,7 +41,11 @@ final class NowPlayingItem: UICollectionViewCell {
         ])
         
         // ToDo добавить лэйбл с названием фильма
-        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
     
     required init?(coder: NSCoder) {

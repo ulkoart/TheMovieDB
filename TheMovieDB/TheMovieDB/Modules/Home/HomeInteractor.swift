@@ -11,12 +11,14 @@ protocol HomeInteractorProtocol {
     var presenter: HomePresenterProtocol? { get set }
     
     func retrieveData()
+    func retrieveMoreNowPlaying()
 }
 
 final class HomeInteractor: HomeInteractorProtocol {
     weak var presenter: HomePresenterProtocol?
     
     private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
+    private var nowPlayingPage: Int = 1
     
     func retrieveData() {
         
@@ -33,7 +35,7 @@ final class HomeInteractor: HomeInteractorProtocol {
         }
 
         dispatchGroup.enter()
-        service.getNowPlaying { nowPlayingFromApi, _ in
+        service.getNowPlaying(page: nowPlayingPage) { nowPlayingFromApi, _ in
             dispatchGroup.leave()
             nowPlaying = nowPlayingFromApi
         }
@@ -46,6 +48,13 @@ final class HomeInteractor: HomeInteractorProtocol {
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             self?.presenter?.loadDataSuccess(trends: trends, nowPlaying: nowPlaying, tvPopular: tvPopular)
+        }
+    }
+    
+    func retrieveMoreNowPlaying() {
+        nowPlayingPage += 1
+        service.getNowPlaying(page: nowPlayingPage) { [weak self] nowPlayingFromApi, _ in
+            self?.presenter?.loadMoreNowPlayingSuccess(nowPlaying: nowPlayingFromApi)
         }
     }
 }
