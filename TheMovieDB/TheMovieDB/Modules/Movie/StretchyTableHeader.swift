@@ -8,11 +8,21 @@
 import UIKit
 
 final class StretchyTableHeader: UIView {
+    
     let imageView: UIImageView = {
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
         return $0
     }(UIImageView())
+    
+    private let titileLabel: UILabel = {
+        $0.font = .init(.systemFont(ofSize: 28, weight: .semibold))
+        $0.textColor =  .white
+        $0.numberOfLines = 0
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "8.0"
+        return $0
+    }(UILabel())
     
     private var imageViewHeight = NSLayoutConstraint()
     private var imageViewBottom = NSLayoutConstraint()
@@ -31,6 +41,7 @@ final class StretchyTableHeader: UIView {
     
     func createViews() {
         addSubview(containerView)
+//        addSubview(titileLabel)
         containerView.addSubview(imageView)
     }
     
@@ -40,6 +51,12 @@ final class StretchyTableHeader: UIView {
             centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             heightAnchor.constraint(equalTo: containerView.heightAnchor)
         ])
+        
+//        NSLayoutConstraint.activate([
+//            titileLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+//            titileLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+//
+//        ])
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         

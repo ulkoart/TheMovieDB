@@ -9,18 +9,15 @@ import UIKit
 
 protocol HomeViewControllerProtocol: AnyObject {
     var presenter: HomePresenterProtocol? { get set }
-    
     var trends: [Movie] { get set }
     var nowPlaying: [NowPlayingMovie] { get set }
     var tvPopular: [TvPopular] { get set }
-    
-    func showLoadView()
-    func hideLoadView()
+
     func reloadRows()
     func addNowPlaying()
 }
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: IndicationViewController {
     
     var presenter: HomePresenterProtocol?
     
@@ -39,10 +36,6 @@ final class HomeViewController: UIViewController {
         return $0
     }(UITableView())
     
-    private let loadView: LoadView = {
-        return $0
-    }(LoadView())
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -52,6 +45,7 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
     }
     
     private func configure() {
@@ -109,11 +103,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            return view.frame.size.height * 0.38
+            return 280
         case 1:
-            return view.frame.size.height * 0.28
+            return 200
         case 2:
-            return view.frame.size.height * 0.2
+            return 140
         default:
             fatalError()
         }
@@ -121,19 +115,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HomeViewController: HomeViewControllerProtocol {
-    func showLoadView() {
-        tableView.alpha = 0
-        view.addSubview(loadView)
-        loadView.alpha = 1
-    }
-    
-    func hideLoadView() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.loadView.alpha = 0
-        })
-        tableView.alpha = 1
-        loadView.removeFromSuperview()
-    }
     
     func reloadRows() {
         let trendsIndexPath = IndexPath(row: 0, section: 0)

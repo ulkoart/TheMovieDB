@@ -7,8 +7,10 @@
 
 import UIKit
 
+// typealias HomeViewIndicationProtocol = HomeViewControllerProtocol & IndicationViewControllerProtocol
+
 protocol HomePresenterProtocol: AnyObject {
-    var viewController: HomeViewControllerProtocol? { get set }
+    var viewController: (HomeViewControllerProtocol & IndicationViewControllerProtocol)? { get set }
     var interactor: HomeInteractorProtocol? { get set }
     var router: HomeRouterProtocol? { get set }
     func loadData()
@@ -18,13 +20,15 @@ protocol HomePresenterProtocol: AnyObject {
     func showMovie(movie: Movie)
 }
 
-class HomePresenter: HomePresenterProtocol {
-    weak var viewController: HomeViewControllerProtocol?
+final class HomePresenter: HomePresenterProtocol {
+    weak var viewController: (HomeViewControllerProtocol & IndicationViewControllerProtocol)?
     var interactor: HomeInteractorProtocol?
     var router: HomeRouterProtocol?
     /// Запросы на загрузку данных для экрана
     func loadData() {
-        viewController?.showLoadView()
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.showLoadView()
+        }
         interactor?.retrieveData()
     }
     /// Загрузка данных прошла успешно

@@ -7,33 +7,6 @@
 
 import Foundation
 
-typealias URLSessionHandler = (Data?, URLResponse?, Error?) -> Void
-typealias GetTrendingResponse = ([Movie], Error?) -> Void
-typealias GetNowPlayingResponse = ([NowPlayingMovie], Error?) -> Void
-typealias GetTvPopularResponse = ([TvPopular], Error?) -> Void
-typealias GetSearchMovieResponse = ([SearchMovie], Error?) -> Void
-
-protocol TMDBNetworkServiceProtocol {
-    
-    /// Получение списка стендов
-    /// - Parameter completion: ([Movie], Error?) -> Void
-    func getTrending(completion: @escaping GetTrendingResponse)
-    
-    /// Получение списка фильмов идущих в кино в данный момент
-    /// - Parameter completion: ([NowPlayingMovie], Error?) -> Void
-    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse)
-    
-    /// Получение списка популярных сериалов
-    /// - Parameter completion: ([TvPopular], Error?) -> Void
-    func getTvPopular(completion: @escaping GetTvPopularResponse)
-    
-    /// Получение списка фильмов по поисковому запросу
-    /// - Parameters:
-    ///   - query: поисковой запрос
-    ///   - completion: ([SearchMovie], Error?) -> Void
-    func searchMovie(query: String, completion: @escaping GetSearchMovieResponse)
-}
-
 final class TMDBNetworkService {
     
     static let shared: TMDBNetworkServiceProtocol = TMDBNetworkService()
@@ -68,6 +41,7 @@ final class TMDBNetworkService {
         case getNowPlaying(Int)
         case getTvPopular
         case searchMovie(String)
+        case getMovieDetail(Int)
         
         var url: URL? {
             switch self {
@@ -97,8 +71,11 @@ final class TMDBNetworkService {
                 ] + Endpoints.defaultQueryItems
                     
                 return makeUrl(path: path, queryItems: queryItems)
-            }
             
+            case .getMovieDetail(let movieId):
+                let path = "/movie/\(movieId)"
+                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            }
         }
     }
     
@@ -158,6 +135,18 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
             guard let searchMovieResponse = searchMovieResponse else { fatalError() }
             completion(searchMovieResponse.results, nil)
+        }
+    }
+    
+    func getMovieDetail(movieId: Int, completion: @escaping (GetMovieDetailResponse) -> Void) {
+        guard let url = Endpoints.getMovieDetail(movieId).url else { return }
+        
+        GETRequest(url: url, responseType: MovieDetailResponse.self.self) { getMovieDetailResponse, _ in
+            guard let getMovieDetailResponse = getMovieDetailResponse else {
+                completion(.failure(.unknown))
+                return
+            }
+            completion(.success(getMovieDetailResponse))
         }
     }
 }

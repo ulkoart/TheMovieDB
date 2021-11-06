@@ -7,23 +7,32 @@
 
 import UIKit
 
-protocol MovieViewControllerProtocol {}
+protocol MovieViewControllerProtocol: AnyObject {
+    var presenter: MoviePresenterProtocol? { get set }
+    var movieDetail: MovieDetailResponse? { get set }
+}
 
-final class MovieViewController: UIViewController {
+final class MovieViewController: IndicationViewController {
+    var presenter: MoviePresenterProtocol?
+    var movieDetail: MovieDetailResponse? { didSet { configureTable() } }
     
-    let movie: Movie
+    private let movieId: Int
+    private let mediaType: MediaType
+    private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
+    private var headerNavigationBarStyleisHeader: Bool = true
     
     private let tableView: UITableView = {
         $0.allowsSelection = false
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        $0.register(MovieDetail.self, forCellReuseIdentifier: MovieDetail.identifier)
         return $0
     }(UITableView())
     
-    init(movie: Movie) {
-        self.movie = movie
+    init(movieId: Int, mediaType: MediaType) {
+        self.movieId = movieId
+        self.mediaType = mediaType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -31,28 +40,26 @@ final class MovieViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = false
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
+        configureNavigationBar()
+        presenter?.loadData(movieId: movieId, mediaType: mediaType)
     }
     
-    private func configure() {
+    private func configureNavigationBar() {
+        configureNavigationBar(tintColor: .white, barStyle: .black, backgroundImage: UIImage(), backgroundColor: .clear)
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         let rightButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareMovie))
         navigationItem.rightBarButtonItem = rightButton
-        
+    }
+    
+    private func configureTable() {
         tableView.delegate = self
         tableView.dataSource = self
-        
-        let headerView = StretchyTableHeader(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 250))
-        headerView.imageView.image = UIImage(named: "backdrop_placeholder")
+
+        let headerView = StretchyTableHeader(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 350))
         self.tableView.tableHeaderView = headerView
         
         view.addSubview(tableView)
@@ -62,9 +69,19 @@ final class MovieViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        guard let movieDetail = movieDetail else { return }
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(movieDetail.posterPath)"
+        
+        imageNetworkService.getImageFrom(imageUrlString) { image in
+            guard let image = image else { return }
+            DispatchQueue.main.async {
+                headerView.imageView.image = image
+            }
+        }
     }
     
-    private func configureNavigationBar(tintColor: UIColor, barStyle: UIBarStyle, backgroundImage: UIImage, backgroundColor: UIColor) {
+    private func configureNavigationBar(tintColor: UIColor, barStyle: UIBarStyle, backgroundImage: UIImage?, backgroundColor: UIColor) {
         navigationController?.navigationBar.tintColor = tintColor
         navigationController?.navigationBar.barStyle = barStyle
         navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
@@ -73,13 +90,13 @@ final class MovieViewController: UIViewController {
     }
     
     @objc private func shareMovie() {
-        print(#function)
+        self.showAlert(title: "111", message: "222")
     }
 }
 
-extension MovieViewController: UITableViewDelegate {
-    
-}
+extension MovieViewController: MovieViewControllerProtocol { }
+
+extension MovieViewController: UITableViewDelegate { }
 
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,8 +104,10 @@ extension MovieViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "\(indexPath.row)"
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: MovieDetail.identifier, for: indexPath
+        ) as? MovieDetail else { fatalError() }
+        // cell.backgroundColor = .red
         return cell
     }
 }
@@ -96,6 +115,8 @@ extension MovieViewController: UITableViewDataSource {
 extension MovieViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
+        guard let movieDetail = movieDetail else { return }
+        
         headerView.scrollViewDidScroll(scrollView: scrollView)
         
         guard let navigationBarHeight = navigationController?.navigationBar.frame.maxY else { return }
@@ -104,14 +125,16 @@ extension MovieViewController: UIScrollViewDelegate {
         let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: tableView.superview)
         let cellY = rectOfCellInSuperview.origin.y
         
-        if cellY <= navigationBarHeight {
-            self.title = movie.title ?? movie.name
+        if cellY <= navigationBarHeight, headerNavigationBarStyleisHeader {
+            self.title = movieDetail.title
             headerView.imageView.isHidden = true
-            configureNavigationBar(tintColor: .black, barStyle: .default, backgroundImage: UIColor.white.image(), backgroundColor: .white)
-        } else {
+            configureNavigationBar(tintColor: .black, barStyle: .default, backgroundImage: nil, backgroundColor: .white)
+            headerNavigationBarStyleisHeader = !headerNavigationBarStyleisHeader
+        } else if cellY > navigationBarHeight, !headerNavigationBarStyleisHeader {
             self.title = nil
             headerView.imageView.isHidden = false
             configureNavigationBar(tintColor: .white, barStyle: .black, backgroundImage: UIImage(), backgroundColor: .clear)
+            headerNavigationBarStyleisHeader = !headerNavigationBarStyleisHeader
         }
     }
 }

@@ -12,7 +12,7 @@ final class NowPlayingItem: UICollectionViewCell {
     static let identifier = "NowPlayingItem"
     static let cornerRadius: CGFloat = 5
     
-    private let imageNetworkService: ImageNetworkServiceProtocol = ImageNetworkService.shared
+    private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
     
     private let imageView: UIImageView = {
         if let image = UIImage(named: "backdrop_placeholder") {
@@ -20,7 +20,6 @@ final class NowPlayingItem: UICollectionViewCell {
         }
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = cornerRadius
-        
         $0.contentMode = .scaleToFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0

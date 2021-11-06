@@ -7,17 +7,17 @@
 
 import UIKit
 
-protocol ImageNetworkServiceProtocol {
+protocol ImageLoadServiceProtocol {
     typealias GetImageFromCompletion = (UIImage?) -> Void
     
     /// получить картинку по УРЛу (картинка? прилетает в замыкание)
     func getImageFrom(_ urlString: String, completion: @escaping GetImageFromCompletion)
 }
 
-final class ImageNetworkService: ImageNetworkServiceProtocol {
+final class ImageLoadService: ImageLoadServiceProtocol {
     
-    static var shared: ImageNetworkServiceProtocol = {
-        let instance = ImageNetworkService()
+    static var shared: ImageLoadServiceProtocol = {
+        let instance = ImageLoadService()
         return instance
     }()
     

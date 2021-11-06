@@ -14,7 +14,16 @@ protocol MovieRouterProtocol: AnyObject {
 final class MovieRouter: MovieRouterProtocol {
     
     static func createModule(with movie: Movie) -> UIViewController {
-        let viewController = MovieViewController(movie: movie)
+        let viewController = MovieViewController(movieId: movie.id, mediaType: movie.mediaType)
+        let presenter = MoviePresenter()
+        let interactor = MovieInteractor()
+        let router = MovieRouter()
+        
+        viewController.presenter = presenter
+        presenter.viewController = viewController
+        presenter.interactor = interactor
+        presenter.router = router
+        interactor.presenter = presenter
         
         return viewController
     }
