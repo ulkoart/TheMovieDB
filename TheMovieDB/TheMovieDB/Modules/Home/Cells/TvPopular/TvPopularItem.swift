@@ -12,7 +12,7 @@ final class TvPopularItem: UICollectionViewCell {
     static let identifier = "TvPopularItem"
     static let cornerRadius: CGFloat = 5
     
-    private let imageNetworkService: ImageNetworkServiceProtocol = ImageNetworkService.shared
+    private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
     
     private let imageView: UIImageView = {
         if let image = UIImage(named: "backdrop_placeholder") {
@@ -43,6 +43,11 @@ final class TvPopularItem: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
     
     func configure(with tvPopular: TvPopular) {

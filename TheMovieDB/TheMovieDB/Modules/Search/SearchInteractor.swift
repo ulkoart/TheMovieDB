@@ -7,14 +7,14 @@
 
 import Foundation
 
-protocol SearchInteractorProtocol {
+protocol SearchInteractorProtocol: AnyObject {
     var presenter: SearchPresenterProtocol? { get set }
     
     func retrieveSearchMovie(query: String)
 }
 
 final class SearchInteractor: SearchInteractorProtocol {
-    var presenter: SearchPresenterProtocol?
+    weak var presenter: SearchPresenterProtocol?
     
     private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
     

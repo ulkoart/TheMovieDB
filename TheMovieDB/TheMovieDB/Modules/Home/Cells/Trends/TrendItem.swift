@@ -12,7 +12,7 @@ final class TrendItem: UICollectionViewCell {
     static let identifier = "TrendItem"
     static let cornerRadius: CGFloat = 5
     
-    private let imageNetworkService: ImageNetworkServiceProtocol = ImageNetworkService.shared
+    private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
     
     private let imageView: UIImageView = {
         if let image = UIImage(named: "backdrop_placeholder") {
@@ -21,7 +21,6 @@ final class TrendItem: UICollectionViewCell {
         
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = cornerRadius
-        
         $0.contentMode = .scaleToFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
@@ -124,6 +123,11 @@ final class TrendItem: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = gradientView.bounds
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
     
     func configure(with movie: Movie) {

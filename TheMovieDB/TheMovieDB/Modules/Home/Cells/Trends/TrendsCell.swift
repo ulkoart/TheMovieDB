@@ -7,9 +7,16 @@
 
 import UIKit
 
+protocol TrendsCellDidSelectItemAtDelegate: AnyObject {
+    func movieTrendDidSelect(with: Movie)
+}
+
 final class TrendsCell: UITableViewCell {
     
     static let identifier = "TrendsCell"
+    
+    /// делегат обрабатывающий нажатия на ячейку
+    weak var delegate: TrendsCellDidSelectItemAtDelegate?
     
     var movies: [Movie] = .init() {
         didSet {
@@ -81,6 +88,13 @@ extension TrendsCell: UICollectionViewDataSource {
         let movie = movies[indexPath.item]
         cell.configure(with: movie)
         return cell
+    }
+}
+
+extension TrendsCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie: Movie = movies[indexPath.item]
+        delegate?.movieTrendDidSelect(with: movie)
     }
 }
 

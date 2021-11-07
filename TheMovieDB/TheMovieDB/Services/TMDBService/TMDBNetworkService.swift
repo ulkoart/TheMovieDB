@@ -7,33 +7,6 @@
 
 import Foundation
 
-typealias URLSessionHandler = (Data?, URLResponse?, Error?) -> Void
-typealias GetTrendingResponse = ([Movie], Error?) -> Void
-typealias GetNowPlayingResponse = ([NowPlayingMovie], Error?) -> Void
-typealias GetTvPopularResponse = ([TvPopular], Error?) -> Void
-typealias GetSearchMovieResponse = ([SearchMovie], Error?) -> Void
-
-protocol TMDBNetworkServiceProtocol {
-    
-    /// Получение списка стендов
-    /// - Parameter completion: ([Movie], Error?) -> Void
-    func getTrending(completion: @escaping GetTrendingResponse)
-    
-    /// Получение списка фильмов идущих в кино в данный момент
-    /// - Parameter completion: ([NowPlayingMovie], Error?) -> Void
-    func getNowPlaying(completion: @escaping GetNowPlayingResponse)
-    
-    /// Получение списка популярных сериалов
-    /// - Parameter completion: ([TvPopular], Error?) -> Void
-    func getTvPopular(completion: @escaping GetTvPopularResponse)
-    
-    /// Получение списка фильмов по поисковому запросу
-    /// - Parameters:
-    ///   - query: поисковой запрос
-    ///   - completion: ([SearchMovie], Error?) -> Void
-    func searchMovie(query: String, completion: @escaping GetSearchMovieResponse)
-}
-
 final class TMDBNetworkService {
     
     static let shared: TMDBNetworkServiceProtocol = TMDBNetworkService()
@@ -65,9 +38,10 @@ final class TMDBNetworkService {
         }
         
         case getTrending
-        case getNowPlaying
+        case getNowPlaying(Int)
         case getTvPopular
         case searchMovie(String)
+        case getMovieDetail(Int)
         
         var url: URL? {
             switch self {
@@ -76,9 +50,14 @@ final class TMDBNetworkService {
                 let path = "/trending/all/week"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
             
-            case .getNowPlaying:
+            case .getNowPlaying(let page):
+
+                let queryItems = [
+                    URLQueryItem(name: "page", value: "\(page)")
+                ] + Endpoints.defaultQueryItems
+                
                 let path = "/movie/now_playing"
-                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+                return makeUrl(path: path, queryItems: queryItems)
             
             case .getTvPopular:
                 let path = "/tv/popular"
@@ -92,8 +71,11 @@ final class TMDBNetworkService {
                 ] + Endpoints.defaultQueryItems
                     
                 return makeUrl(path: path, queryItems: queryItems)
-            }
             
+            case .getMovieDetail(let movieId):
+                let path = "/movie/\(movieId)"
+                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            }
         }
     }
     
@@ -108,11 +90,12 @@ final class TMDBNetworkService {
                 let decodedObject = try self.decoder.decode(responseType, from: data)
                 completion(decodedObject, nil)
             } catch {
+                print(url)
                 fatalError()
             }
         }
         let task = session.dataTask(with: url, completionHandler: handler)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) {
             task.resume()
         }
     }
@@ -128,9 +111,9 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         }
     }
     
-    func getNowPlaying(completion: @escaping GetNowPlayingResponse) {
-        guard let url = Endpoints.getNowPlaying.url else { return }
-        
+    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse) {
+        guard let url = Endpoints.getNowPlaying(page).url else { return }
+  
         GETRequest(url: url, responseType: NowPlayingResponse.self) { nowPlayingResponse, _ in
             guard let nowPlayingResponse = nowPlayingResponse else { fatalError() }
             completion(nowPlayingResponse.results, nil)
@@ -152,6 +135,18 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
             guard let searchMovieResponse = searchMovieResponse else { fatalError() }
             completion(searchMovieResponse.results, nil)
+        }
+    }
+    
+    func getMovieDetail(movieId: Int, completion: @escaping (GetMovieDetailResponse) -> Void) {
+        guard let url = Endpoints.getMovieDetail(movieId).url else { return }
+        
+        GETRequest(url: url, responseType: MovieDetailResponse.self.self) { getMovieDetailResponse, _ in
+            guard let getMovieDetailResponse = getMovieDetailResponse else {
+                completion(.failure(.unknown))
+                return
+            }
+            completion(.success(getMovieDetailResponse))
         }
     }
 }
