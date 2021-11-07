@@ -16,7 +16,7 @@ protocol SearchPresenterProtocol: AnyObject {
 }
 
 class SearchPresenter: SearchPresenterProtocol {
-    var viewController: SearchViewControllerProtocol?
+    weak var viewController: SearchViewControllerProtocol?
     var interactor: SearchInteractorProtocol?
     
     func searchMovie(name query: String) {

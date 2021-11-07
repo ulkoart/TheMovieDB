@@ -21,6 +21,7 @@ final class StretchyTableHeader: UIView {
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "8.0"
+        $0.textAlignment = .center
         return $0
     }(UILabel())
     
@@ -53,9 +54,9 @@ final class StretchyTableHeader: UIView {
         ])
         
 //        NSLayoutConstraint.activate([
-//            titileLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+//            titileLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+//            titileLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 //            titileLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-//
 //        ])
         
         containerView.translatesAutoresizingMaskIntoConstraints = false

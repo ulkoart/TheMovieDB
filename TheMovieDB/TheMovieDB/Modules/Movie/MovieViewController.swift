@@ -42,14 +42,19 @@ final class MovieViewController: IndicationViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
+        configure()
         presenter?.loadData(movieId: movieId, mediaType: mediaType)
     }
     
-    private func configureNavigationBar() {
-        configureNavigationBar(tintColor: .white, barStyle: .black, backgroundImage: UIImage(), backgroundColor: .clear)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
+        navigationController.statusBarEnterDarkBackground()
+    }
+
+    private func configure() {
+        configureNavigationBar(tintColor: .white, backgroundImage: UIImage())
         navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         let rightButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareMovie))
         navigationItem.rightBarButtonItem = rightButton
@@ -58,7 +63,7 @@ final class MovieViewController: IndicationViewController {
     private func configureTable() {
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         let headerView = StretchyTableHeader(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 350))
         self.tableView.tableHeaderView = headerView
         
@@ -81,12 +86,13 @@ final class MovieViewController: IndicationViewController {
         }
     }
     
-    private func configureNavigationBar(tintColor: UIColor, barStyle: UIBarStyle, backgroundImage: UIImage?, backgroundColor: UIColor) {
+    private func configureNavigationBar(tintColor: UIColor, backgroundImage: UIImage?) {
+        let animation = CATransition()
+        animation.duration = 0.2
+        navigationController?.navigationBar.layer.add(animation, forKey: nil)
         navigationController?.navigationBar.tintColor = tintColor
-        navigationController?.navigationBar.barStyle = barStyle
         navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
         navigationController?.navigationBar.shadowImage = backgroundImage
-        navigationController?.navigationBar.backgroundColor = backgroundColor
     }
     
     @objc private func shareMovie() {
@@ -96,18 +102,27 @@ final class MovieViewController: IndicationViewController {
 
 extension MovieViewController: MovieViewControllerProtocol { }
 
-extension MovieViewController: UITableViewDelegate { }
+extension MovieViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
 
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: MovieDetail.identifier, for: indexPath
-        ) as? MovieDetail else { fatalError() }
-        // cell.backgroundColor = .red
+        guard
+            let movieDetail = movieDetail,
+            let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetail.identifier, for: indexPath) as? MovieDetail
+        else { fatalError() }
+        cell.configure(movieDetail: movieDetail)
         return cell
     }
 }
@@ -116,25 +131,26 @@ extension MovieViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
         guard let movieDetail = movieDetail else { return }
+        guard let navigationBarHeight = navigationController?.navigationBar.frame.maxY else { return }
+        guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
         
         headerView.scrollViewDidScroll(scrollView: scrollView)
         
-        guard let navigationBarHeight = navigationController?.navigationBar.frame.maxY else { return }
         let indexPath = IndexPath(row: 0, section: 0)
         let rectOfCellInTableView = tableView.rectForRow(at: indexPath)
         let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: tableView.superview)
-        let cellY = rectOfCellInSuperview.origin.y
+        let cellYPosition = rectOfCellInSuperview.origin.y
         
-        if cellY <= navigationBarHeight, headerNavigationBarStyleisHeader {
+        if cellYPosition <= navigationBarHeight, headerNavigationBarStyleisHeader {
             self.title = movieDetail.title
-            headerView.imageView.isHidden = true
-            configureNavigationBar(tintColor: .black, barStyle: .default, backgroundImage: nil, backgroundColor: .white)
+            configureNavigationBar(tintColor: .black, backgroundImage: nil)
             headerNavigationBarStyleisHeader = !headerNavigationBarStyleisHeader
-        } else if cellY > navigationBarHeight, !headerNavigationBarStyleisHeader {
+            navigationController.statusBarEnterLightBackground()
+        } else if cellYPosition > navigationBarHeight, !headerNavigationBarStyleisHeader {
             self.title = nil
-            headerView.imageView.isHidden = false
-            configureNavigationBar(tintColor: .white, barStyle: .black, backgroundImage: UIImage(), backgroundColor: .clear)
+            configureNavigationBar(tintColor: .white, backgroundImage: UIImage())
             headerNavigationBarStyleisHeader = !headerNavigationBarStyleisHeader
+            navigationController.statusBarEnterDarkBackground()
         }
     }
 }

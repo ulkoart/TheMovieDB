@@ -18,7 +18,7 @@ class MainTabBarController: UITabBarController {
     }
     
     private func createController(viewController: UIViewController, title: String, imageName: String) -> UIViewController {
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = StatusBarStyleNavigationController(rootViewController: viewController)
         navigationController.navigationBar.prefersLargeTitles = true
         viewController.navigationItem.title = title
         navigationController.tabBarItem.title = nil

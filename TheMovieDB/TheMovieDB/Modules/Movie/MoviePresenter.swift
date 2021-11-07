@@ -25,7 +25,7 @@ final class MoviePresenter: MoviePresenterProtocol {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.showLoadView()
         }
-        interactor?.retrieveMovieData(movieId: movieId, mediaType: mediaType)
+        interactor?.retrieveData(movieId: movieId, mediaType: mediaType)
     }
     
     func loadDataSuccess(movieDetail: MovieDetailResponse) {

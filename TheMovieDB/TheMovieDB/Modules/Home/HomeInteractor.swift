@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol HomeInteractorProtocol {
+protocol HomeInteractorProtocol: AnyObject {
     var presenter: HomePresenterProtocol? { get set }
-    
+
     func retrieveData()
     func retrieveMoreNowPlaying()
 }
@@ -21,7 +21,7 @@ final class HomeInteractor: HomeInteractorProtocol {
     private var nowPlayingPage: Int = 1
     
     func retrieveData() {
-        
+    
         var trends = [Movie]()
         var nowPlaying = [NowPlayingMovie]()
         var tvPopular = [TvPopular]()

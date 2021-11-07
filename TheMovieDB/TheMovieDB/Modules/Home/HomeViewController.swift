@@ -44,8 +44,10 @@ final class HomeViewController: IndicationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.barStyle = .default
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
+        navigationController.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController.navigationBar.shadowImage = nil
+        navigationController.statusBarEnterLightBackground()
     }
     
     private func configure() {
@@ -100,7 +102,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         switch indexPath.row {
         case 0:
             return 280

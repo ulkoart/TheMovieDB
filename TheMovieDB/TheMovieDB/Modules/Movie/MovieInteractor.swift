@@ -7,29 +7,42 @@
 
 import Foundation
 
-protocol MovieInteractorProtocol {
+protocol MovieInteractorProtocol: AnyObject {
     var presenter: MoviePresenterProtocol? { get set }
-    func retrieveMovieData(movieId: Int, mediaType: MediaType)
-    
+    func retrieveData(movieId: Int, mediaType: MediaType)
 }
 
 final class MovieInteractor: MovieInteractorProtocol {
-    var presenter: MoviePresenterProtocol?
+    weak var presenter: MoviePresenterProtocol?
     private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
+    private let dispatchGroup = DispatchGroup()
+    private var movieDetail: MovieDetailResponse?
         
-    func retrieveMovieData(movieId: Int, mediaType: MediaType) {
+    func retrieveData(movieId: Int, mediaType: MediaType) {
         switch mediaType {
         case .movie:
-            service.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
+            retrieveMovieData(movieId: movieId)
         case .tvSerial:
-            print(2)
+            print("tvSerial")
+        }
+    }
+    
+    private func retrieveMovieData(movieId: Int) {
+        dispatchGroup.enter()
+        service.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let movieDetail = self?.movieDetail else { return }
+            self?.presenter?.loadDataSuccess(movieDetail: movieDetail)
         }
     }
     
     private func processGetMovieDetail(_ response: GetMovieDetailResponse) {
+        dispatchGroup.leave()
+        
         switch response {
         case .success(let data):
-            presenter?.loadDataSuccess(movieDetail: data)
+            movieDetail = data
         case .failure(let error):
             print(error)
         }

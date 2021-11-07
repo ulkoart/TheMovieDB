@@ -7,10 +7,10 @@
 
 import UIKit
 
-// typealias HomeViewIndicationProtocol = HomeViewControllerProtocol & IndicationViewControllerProtocol
+typealias HomeViewIndicationProtocol = HomeViewControllerProtocol & IndicationViewControllerProtocol
 
 protocol HomePresenterProtocol: AnyObject {
-    var viewController: (HomeViewControllerProtocol & IndicationViewControllerProtocol)? { get set }
+    var viewController: HomeViewIndicationProtocol? { get set }
     var interactor: HomeInteractorProtocol? { get set }
     var router: HomeRouterProtocol? { get set }
     func loadData()
@@ -21,7 +21,7 @@ protocol HomePresenterProtocol: AnyObject {
 }
 
 final class HomePresenter: HomePresenterProtocol {
-    weak var viewController: (HomeViewControllerProtocol & IndicationViewControllerProtocol)?
+    weak var viewController: HomeViewIndicationProtocol?
     var interactor: HomeInteractorProtocol?
     var router: HomeRouterProtocol?
     /// Запросы на загрузку данных для экрана

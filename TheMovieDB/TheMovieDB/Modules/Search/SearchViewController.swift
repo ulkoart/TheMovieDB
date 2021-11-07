@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SearchViewControllerProtocol {
+protocol SearchViewControllerProtocol: AnyObject {
     var presenter: SearchPresenterProtocol? { get set }
     var searchResults: [SearchMovie] { get set }
 }

@@ -21,7 +21,6 @@ final class TrendItem: UICollectionViewCell {
         
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = cornerRadius
-        
         $0.contentMode = .scaleToFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
