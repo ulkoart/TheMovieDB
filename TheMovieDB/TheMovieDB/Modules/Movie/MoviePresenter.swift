@@ -12,8 +12,8 @@ protocol MoviePresenterProtocol: AnyObject {
     var interactor: MovieInteractorProtocol? { get set }
     var router: MovieRouterProtocol? { get set }
     
-    func loadData(movieId: Int, mediaType: MediaType)
-    func loadDataSuccess(movieDetail: MovieDetailResponse)
+    func loadData(movieId: Int)
+    func loadDataSuccess(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse)
 }
 
 final class MoviePresenter: MoviePresenterProtocol {
@@ -21,17 +21,18 @@ final class MoviePresenter: MoviePresenterProtocol {
     var interactor: MovieInteractorProtocol?
     var router: MovieRouterProtocol?
     
-    func loadData(movieId: Int, mediaType: MediaType) {
+    func loadData(movieId: Int) {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.showLoadView()
         }
-        interactor?.retrieveData(movieId: movieId, mediaType: mediaType)
+        interactor?.retrieveData(movieId: movieId)
     }
     
-    func loadDataSuccess(movieDetail: MovieDetailResponse) {
+    func loadDataSuccess(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse) {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.hideLoadView()
-            self?.viewController?.movieDetail = movieDetail
+            self?.viewController?.configureData(movieDetail: movieDetail, movieCredits: movieCredits)
+            self?.viewController?.reloadData()
         }
     }
 }

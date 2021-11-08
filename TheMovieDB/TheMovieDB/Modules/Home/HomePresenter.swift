@@ -17,7 +17,7 @@ protocol HomePresenterProtocol: AnyObject {
     func loadDataSuccess(trends: [Movie], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular])
     func loadMoreNowPlaying()
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie])
-    func showMovie(movie: Movie)
+    func showMovie(movieId: Int)
 }
 
 final class HomePresenter: HomePresenterProtocol {
@@ -42,9 +42,9 @@ final class HomePresenter: HomePresenterProtocol {
         }
     }
     
-    func showMovie(movie: Movie) {
+    func showMovie(movieId: Int) {
         guard let viewController = viewController else { return }
-        router?.presentMovieScreen(from: viewController, for: movie)
+        router?.presentMovieScreen(from: viewController, for: movieId)
     }
     
     func loadMoreNowPlaying() {

@@ -8,13 +8,13 @@
 import UIKit
 
 protocol MovieRouterProtocol: AnyObject {
-    static func createModule(with movie: Movie) -> UIViewController
+    static func createModule(with movieId: Int) -> UIViewController
 }
 
 final class MovieRouter: MovieRouterProtocol {
     
-    static func createModule(with movie: Movie) -> UIViewController {
-        let viewController = MovieViewController(movieId: movie.id, mediaType: movie.mediaType)
+    static func createModule(with movieId: Int) -> UIViewController {
+        let viewController = MovieViewController(movieId: movieId)
         let presenter = MoviePresenter()
         let interactor = MovieInteractor()
         let router = MovieRouter()

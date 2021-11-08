@@ -12,7 +12,7 @@ protocol HomeViewControllerProtocol: AnyObject {
     var trends: [Movie] { get set }
     var nowPlaying: [NowPlayingMovie] { get set }
     var tvPopular: [TvPopular] { get set }
-
+    
     func reloadRows()
     func addNowPlaying()
 }
@@ -85,14 +85,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: NowPlayingCell.identifier, for: indexPath
+                withIdentifier: NowPlayingCell.identifier, for: indexPath
             ) as? NowPlayingCell else { fatalError() }
             cell.nowPlaying = self.nowPlaying
             cell.loadMoreDelegat = self
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: TvPopularCell.identifier, for: indexPath
+                withIdentifier: TvPopularCell.identifier, for: indexPath
             ) as? TvPopularCell else { fatalError() }
             cell.tvPopulars = self.tvPopular
             return cell
@@ -136,7 +136,12 @@ extension HomeViewController: HomeViewControllerProtocol {
 
 extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
     func movieTrendDidSelect(with movie: Movie) {
-        presenter?.showMovie(movie: movie)
+        switch movie.mediaType {
+        case .movie:
+            presenter?.showMovie(movieId: movie.id)
+        case .tvSerial:
+            print("need to be implemented")
+        }
     }
 }
 

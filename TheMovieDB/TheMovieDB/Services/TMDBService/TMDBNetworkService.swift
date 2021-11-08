@@ -27,6 +27,7 @@ final class TMDBNetworkService {
             URLQueryItem(name: "language", value: "ru-RU")
         ]
         
+        /// возвращает собранный url (опциональный)
         private func makeUrl(path: String, queryItems: [URLQueryItem] = []) -> URL? {
             var components = URLComponents()
             components.scheme = "https"
@@ -42,6 +43,7 @@ final class TMDBNetworkService {
         case getTvPopular
         case searchMovie(String)
         case getMovieDetail(Int)
+        case getMovieCredits(Int)
         
         var url: URL? {
             switch self {
@@ -75,11 +77,16 @@ final class TMDBNetworkService {
             case .getMovieDetail(let movieId):
                 let path = "/movie/\(movieId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+                
+            case .getMovieCredits(let movieId):
+                let path = "/movie/\(movieId)/credits"
+                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
             }
         }
     }
     
     private func GETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -95,9 +102,8 @@ final class TMDBNetworkService {
             }
         }
         let task = session.dataTask(with: url, completionHandler: handler)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) {
-            task.resume()
-        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) { task.resume() }
     }
 }
 
@@ -147,6 +153,18 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
                 return
             }
             completion(.success(getMovieDetailResponse))
+        }
+    }
+    
+    func getMovieCredits(movieId: Int, completion: @escaping (GetMovieCreditsResponse) -> Void) {
+        guard let url = Endpoints.getMovieCredits(movieId).url else { return }
+        
+        GETRequest(url: url, responseType: MovieCreditsResponse.self.self) { getMovieCreditsResponse, _ in
+            guard let getMovieCreditsResponse = getMovieCreditsResponse else {
+                completion(.failure(.unknown))
+                return
+            }
+            completion(.success(getMovieCreditsResponse))
         }
     }
 }
