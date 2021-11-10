@@ -21,7 +21,7 @@ enum MediaType: String, Codable {
     }
 }
 
-struct Movie: Decodable {
+struct Trend: Decodable {
     let adult: Bool?
     let backdropPath: String
     let genreIDS: [Int]

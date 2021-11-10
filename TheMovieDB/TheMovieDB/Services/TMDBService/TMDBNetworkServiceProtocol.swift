@@ -8,7 +8,7 @@
 import Foundation
 
 typealias URLSessionHandler = (Data?, URLResponse?, Error?) -> Void
-typealias GetTrendingResponse = ([Movie], Error?) -> Void
+typealias GetTrendingResponse = ([Trend], Error?) -> Void
 typealias GetNowPlayingResponse = ([NowPlayingMovie], Error?) -> Void
 typealias GetTvPopularResponse = ([TvPopular], Error?) -> Void
 typealias GetSearchMovieResponse = ([SearchMovie], Error?) -> Void

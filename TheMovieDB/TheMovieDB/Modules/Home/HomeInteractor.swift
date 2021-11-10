@@ -22,7 +22,7 @@ final class HomeInteractor: HomeInteractorProtocol {
     
     func retrieveData() {
     
-        var trends = [Movie]()
+        var trends = [Trend]()
         var nowPlaying = [NowPlayingMovie]()
         var tvPopular = [TvPopular]()
         

@@ -10,5 +10,5 @@ import Foundation
 /// Ответ с трендами, возвращаемый API
 struct TrendingResponse: Decodable {
     let page: Int
-    let results: [Movie]
+    let results: [Trend]
 }

@@ -130,19 +130,19 @@ final class TrendItem: UICollectionViewCell {
         self.imageView.image = nil
     }
     
-    func configure(with movie: Movie) {
-        titileLabel.text = movie.name ?? movie.title
-        voteAverageLabel.text = "\(movie.voteAverage)"
+    func configure(with trend: Trend) {
+        titileLabel.text = trend.name ?? trend.title
+        voteAverageLabel.text = "\(trend.voteAverage)"
         
-        if movie.voteAverage >= 8.0 {
+        if trend.voteAverage >= 8.0 {
             voteAverageLabel.backgroundColor = .systemGreen
         } else {
             voteAverageLabel.backgroundColor = .lightGray
         }
         
-        mediaTypeLabel.text = movie.mediaType.ruValue
+        mediaTypeLabel.text = trend.mediaType.ruValue
         
-        let imageUrlString = "https://image.tmdb.org/t/p/w500\(movie.backdropPath)"
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(trend.backdropPath)"
         
         imageNetworkService.getImageFrom(imageUrlString) { [weak self] image in
             guard let image = image else { return }

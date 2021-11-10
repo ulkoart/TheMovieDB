@@ -14,7 +14,7 @@ protocol HomePresenterProtocol: AnyObject {
     var interactor: HomeInteractorProtocol? { get set }
     var router: HomeRouterProtocol? { get set }
     func loadData()
-    func loadDataSuccess(trends: [Movie], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular])
+    func loadDataSuccess(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular])
     func loadMoreNowPlaying()
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie])
     func showMovie(movieId: Int)
@@ -32,7 +32,7 @@ final class HomePresenter: HomePresenterProtocol {
         interactor?.retrieveData()
     }
     /// Загрузка данных прошла успешно
-    func loadDataSuccess(trends: [Movie], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular]) {
+    func loadDataSuccess(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular]) {
         viewController?.trends = trends
         viewController?.nowPlaying = nowPlaying
         viewController?.tvPopular = tvPopular

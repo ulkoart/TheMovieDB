@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrendsCellDidSelectItemAtDelegate: AnyObject {
-    func movieTrendDidSelect(with: Movie)
+    func trendDidSelect(with: Trend)
 }
 
 final class TrendsCell: UITableViewCell {
@@ -18,7 +18,7 @@ final class TrendsCell: UITableViewCell {
     /// делегат обрабатывающий нажатия на ячейку
     weak var delegate: TrendsCellDidSelectItemAtDelegate?
     
-    var movies: [Movie] = .init() {
+    var trends: [Trend] = .init() {
         didSet {
             collectionView.reloadData()
         }
@@ -78,23 +78,23 @@ final class TrendsCell: UITableViewCell {
 
 extension TrendsCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        movies.count
+        trends.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TrendItem.identifier, for: indexPath
         ) as? TrendItem else { fatalError() }
-        let movie = movies[indexPath.item]
-        cell.configure(with: movie)
+        let trend = trends[indexPath.item]
+        cell.configure(with: trend)
         return cell
     }
 }
 
 extension TrendsCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie: Movie = movies[indexPath.item]
-        delegate?.movieTrendDidSelect(with: movie)
+        let movie: Trend = trends[indexPath.item]
+        delegate?.trendDidSelect(with: movie)
     }
 }
 

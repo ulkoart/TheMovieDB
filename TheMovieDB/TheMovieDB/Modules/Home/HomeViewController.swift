@@ -9,7 +9,7 @@ import UIKit
 
 protocol HomeViewControllerProtocol: AnyObject {
     var presenter: HomePresenterProtocol? { get set }
-    var trends: [Movie] { get set }
+    var trends: [Trend] { get set }
     var nowPlaying: [NowPlayingMovie] { get set }
     var tvPopular: [TvPopular] { get set }
     
@@ -21,7 +21,7 @@ final class HomeViewController: IndicationViewController {
     
     var presenter: HomePresenterProtocol?
     
-    var trends: [Movie] = .init()
+    var trends: [Trend] = .init()
     var nowPlaying: [NowPlayingMovie] = .init()
     var tvPopular: [TvPopular] = .init()
     
@@ -80,7 +80,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendsCell.identifier, for: indexPath) as? TrendsCell else { fatalError() }
-            cell.movies = self.trends
+            cell.trends = self.trends
             cell.delegate = self
             return cell
         case 1:
@@ -135,10 +135,10 @@ extension HomeViewController: HomeViewControllerProtocol {
 }
 
 extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
-    func movieTrendDidSelect(with movie: Movie) {
-        switch movie.mediaType {
+    func trendDidSelect(with trend: Trend) {
+        switch trend.mediaType {
         case .movie:
-            presenter?.showMovie(movieId: movie.id)
+            presenter?.showMovie(movieId: trend.id)
         case .tvSerial:
             print("need to be implemented")
         }

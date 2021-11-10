@@ -20,7 +20,7 @@ final class MovieViewController: IndicationViewController {
     private let movieId: Int
     private var movieDetail: MovieDetailResponse?
     private var movieCredits: MovieCreditsResponse?
-    private var navigationBarStyleIsStretchy: Bool = true
+    private var tableHeaderIsHidden: Bool = false
     private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
     
     private let tableView: UITableView = {
@@ -87,7 +87,7 @@ final class MovieViewController: IndicationViewController {
         navigationController?.navigationBar.tintColor = tintColor
         navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
         navigationController?.navigationBar.shadowImage = backgroundImage
-        navigationBarStyleIsStretchy = !navigationBarStyleIsStretchy
+        tableHeaderIsHidden = !tableHeaderIsHidden
     }
     
     @objc private func shareMovie() {
@@ -99,9 +99,12 @@ extension MovieViewController: MovieViewControllerProtocol {
     func configureData(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse) {
         self.movieDetail = movieDetail
         self.movieCredits = movieCredits
-        
+        loadHeaderViewImage(posterPath: movieDetail.posterPath)
+    }
+    
+    private func loadHeaderViewImage(posterPath: String) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
-        let imageUrlString = "https://image.tmdb.org/t/p/w500\(movieDetail.posterPath)"
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(posterPath)"
 
         imageNetworkService.getImageFrom(imageUrlString) { image in
             guard let image = image else { return }
@@ -172,11 +175,11 @@ extension MovieViewController: UIScrollViewDelegate {
         let rectOfCellInSuperview = tableView.convert(rectOfCellInTableView, to: tableView.superview)
         let cellYPosition = rectOfCellInSuperview.origin.y
         
-        if cellYPosition <= navigationBarYPosition, navigationBarStyleIsStretchy {
+        if cellYPosition <= navigationBarYPosition, tableHeaderIsHidden {
             self.title = movieDetail.title
             configureNavigationBarStyle(tintColor: .black, backgroundImage: nil)
             navigationController.statusBarEnterLightBackground()
-        } else if cellYPosition > navigationBarYPosition, !navigationBarStyleIsStretchy {
+        } else if cellYPosition > navigationBarYPosition, !tableHeaderIsHidden {
             self.title = nil
             configureNavigationBarStyle(tintColor: .white, backgroundImage: UIImage())
             navigationController.statusBarEnterDarkBackground()

@@ -32,7 +32,7 @@
 		CECAB9242738488C00D9A673 /* StatusBarStyleNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */; };
 		CED0E4E62727F93C001DD0F0 /* TMDBNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4E52727F93C001DD0F0 /* TMDBNetworkService.swift */; };
 		CED0E4E92727F9B7001DD0F0 /* TrendingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4E82727F9B7001DD0F0 /* TrendingResponse.swift */; };
-		CED0E4EB2727FA2F001DD0F0 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4EA2727FA2F001DD0F0 /* Movie.swift */; };
+		CED0E4EB2727FA2F001DD0F0 /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4EA2727FA2F001DD0F0 /* Trend.swift */; };
 		CED0E4EE27281682001DD0F0 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4ED27281682001DD0F0 /* HomePresenter.swift */; };
 		CED0E4F027281697001DD0F0 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4EF27281697001DD0F0 /* HomeInteractor.swift */; };
 		CED0E4F327282984001DD0F0 /* InformingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4F227282984001DD0F0 /* InformingService.swift */; };
@@ -80,7 +80,7 @@
 		CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarStyleNavigationController.swift; sourceTree = "<group>"; };
 		CED0E4E52727F93C001DD0F0 /* TMDBNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBNetworkService.swift; sourceTree = "<group>"; };
 		CED0E4E82727F9B7001DD0F0 /* TrendingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingResponse.swift; sourceTree = "<group>"; };
-		CED0E4EA2727FA2F001DD0F0 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		CED0E4EA2727FA2F001DD0F0 /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
 		CED0E4ED27281682001DD0F0 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		CED0E4EF27281697001DD0F0 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		CED0E4F227282984001DD0F0 /* InformingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformingService.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 		CED0E4E42727F7DB001DD0F0 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				CED0E4EA2727FA2F001DD0F0 /* Movie.swift */,
+				CED0E4EA2727FA2F001DD0F0 /* Trend.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -415,7 +415,7 @@
 				CE67103F27367BE300745683 /* IndicationViewController.swift in Sources */,
 				CED0E4F027281697001DD0F0 /* HomeInteractor.swift in Sources */,
 				CEB78AF62727210300D7F0D3 /* TrendItem.swift in Sources */,
-				CED0E4EB2727FA2F001DD0F0 /* Movie.swift in Sources */,
+				CED0E4EB2727FA2F001DD0F0 /* Trend.swift in Sources */,
 				CEB78AEE2726DAB800D7F0D3 /* HomeRouter.swift in Sources */,
 				CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */,
 				CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */,
