@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MovieDetail: UITableViewCell {
+final class MovieOverview: UITableViewCell {
     static let identifier = "MovieDetail"
     
     private let overviewLabel: UILabel = {

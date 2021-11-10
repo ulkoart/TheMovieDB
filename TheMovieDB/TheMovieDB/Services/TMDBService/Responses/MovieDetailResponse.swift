@@ -7,7 +7,8 @@
 
 import Foundation
 
-// MARK: - MovieDetail
+// MARK: - MovieDetailResponse
+
 struct MovieDetailResponse: Codable {
     let adult: Bool
     let backdropPath: String

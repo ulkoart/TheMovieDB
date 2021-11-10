@@ -15,13 +15,10 @@ final class TrendItem: UICollectionViewCell {
     private let imageNetworkService: ImageLoadServiceProtocol = ImageLoadService.shared
     
     private let imageView: UIImageView = {
-        if let image = UIImage(named: "backdrop_placeholder") {
-            $0.image = image
-        }
-        
+        $0.backgroundColor = .init(white: 0.8, alpha: 1)
         $0.layer.masksToBounds = true
         $0.layer.cornerRadius = cornerRadius
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIImageView())

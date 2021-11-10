@@ -15,15 +15,27 @@ final class StretchyTableHeader: UIView {
         return $0
     }(UIImageView())
     
-    private let titileLabel: UILabel = {
-        $0.font = .init(.systemFont(ofSize: 28, weight: .semibold))
-        $0.textColor =  .white
+    private let infoLabel: UILabel = {
+        $0.font = .init(.systemFont(ofSize: 18, weight: .thin))
+        $0.textColor = .init(white: 0.1, alpha: 1)
         $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "8.0"
         $0.textAlignment = .center
         return $0
     }(UILabel())
+    
+    private let gradientView: UIView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.layer.masksToBounds = true
+        return $0
+    }(UIView())
+    
+    private let gradientLayer: CAGradientLayer = {
+        $0.colors = [UIColor.clear.cgColor, UIColor.init(white: 1, alpha: 0.9).cgColor]
+        $0.startPoint = CGPoint(x: 0, y: 0)
+        $0.endPoint = CGPoint(x: 0, y: 1)
+        return $0
+    }(CAGradientLayer())
     
     private var imageViewHeight = NSLayoutConstraint()
     private var imageViewBottom = NSLayoutConstraint()
@@ -36,28 +48,42 @@ final class StretchyTableHeader: UIView {
         setViewConstraints()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = gradientView.bounds
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func createViews() {
+    private func createViews() {
         addSubview(containerView)
-//        addSubview(titileLabel)
+        addSubview(gradientView)
+        addSubview(infoLabel)
         containerView.addSubview(imageView)
     }
     
-    func setViewConstraints() {
+    private func setViewConstraints() {
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalTo: containerView.widthAnchor),
             centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             heightAnchor.constraint(equalTo: containerView.heightAnchor)
         ])
         
-//        NSLayoutConstraint.activate([
-//            titileLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            titileLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-//            titileLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-//        ])
+        NSLayoutConstraint.activate([
+            infoLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            infoLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+        ])
+        
+        gradientView.layer.insertSublayer(gradientLayer, at: 0)
+        NSLayoutConstraint.activate([
+            gradientView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            gradientView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/2)
+        ])
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -73,10 +99,14 @@ final class StretchyTableHeader: UIView {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-            containerViewHeight.constant = scrollView.contentInset.top
-            let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
-            containerView.clipsToBounds = offsetY <= 0
-            imageViewBottom.constant = offsetY >= 0 ? 0 : -offsetY / 2
-            imageViewHeight.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
-        }
+        containerViewHeight.constant = scrollView.contentInset.top
+        let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
+        containerView.clipsToBounds = offsetY <= 0
+        imageViewBottom.constant = offsetY >= 0 ? 0 : -offsetY / 2
+        imageViewHeight.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
+    }
+    
+    func configure(with text: String) {
+        infoLabel.text = text
+    }
 }

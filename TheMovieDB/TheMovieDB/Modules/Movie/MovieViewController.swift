@@ -28,8 +28,10 @@ final class MovieViewController: IndicationViewController {
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(MovieDetail.self, forCellReuseIdentifier: MovieDetail.identifier)
+        $0.register(MovieOverview.self, forCellReuseIdentifier: MovieOverview.identifier)
         $0.register(VoteBlock.self, forCellReuseIdentifier: VoteBlock.identifier)
+        $0.register(CastsCell.self, forCellReuseIdentifier: CastsCell.identifier)
+        $0.register(CrewsCell.self, forCellReuseIdentifier: CrewsCell.identifier)
         return $0
     }(UITableView())
     
@@ -99,12 +101,24 @@ extension MovieViewController: MovieViewControllerProtocol {
     func configureData(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse) {
         self.movieDetail = movieDetail
         self.movieCredits = movieCredits
-        loadHeaderViewImage(posterPath: movieDetail.posterPath)
+        configureHeaderView(with: movieDetail)
     }
     
-    private func loadHeaderViewImage(posterPath: String) {
+    private func configureHeaderView(with movieDetail: MovieDetailResponse) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
-        let imageUrlString = "https://image.tmdb.org/t/p/w500\(posterPath)"
+        var releaseDateString = "дата релиза не известна"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-dd-mm"
+        let releaseDate = dateFormatter.date(from: movieDetail.releaseDate)
+        dateFormatter.dateFormat = "YYYY"
+        
+        if let releaseDate = releaseDate {
+            releaseDateString = dateFormatter.string(from: releaseDate)
+        }
+        
+        let genresString = movieDetail.genres.map { $0.name }.joined(separator: ", ")
+        headerView.configure(with: "\(releaseDateString), \(genresString)")
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(movieDetail.posterPath)"
 
         imageNetworkService.getImageFrom(imageUrlString) { image in
             guard let image = image else { return }
@@ -132,15 +146,22 @@ extension MovieViewController: UITableViewDelegate {
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if movieDetail == nil && movieCredits == nil { return 0 }
-        return 2
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let movieDetail = movieDetail else { fatalError() }
+        guard
+            let movieDetail = movieDetail,
+            let movieCredits = movieCredits
+        else { fatalError() }
         
         switch indexPath.row {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieDetail.identifier, for: indexPath) as? MovieDetail
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieOverview.identifier, for: indexPath) as? MovieOverview
             else { fatalError() }
             cell.configure(overview: movieDetail.overview)
             return cell
@@ -149,6 +170,17 @@ extension MovieViewController: UITableViewDataSource {
             else { fatalError() }
             cell.configure(vote: movieDetail.voteAverage, voteCount: movieDetail.voteCount)
             return cell
+        case 2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CastsCell.identifier, for: indexPath) as? CastsCell
+            else { fatalError() }
+            cell.casts = movieCredits.cast
+            return cell
+        case 3:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CrewsCell.identifier, for: indexPath) as? CrewsCell
+            else { fatalError() }
+            cell.crews = movieCredits.crew
+            return cell
+            
         default:
             fatalError()
         }

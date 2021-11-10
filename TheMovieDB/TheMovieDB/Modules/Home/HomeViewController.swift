@@ -44,6 +44,11 @@ final class HomeViewController: IndicationViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        resetNavigationBar()
+        
+    }
+    
+    private func resetNavigationBar() {
         guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
         navigationController.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController.navigationBar.shadowImage = nil

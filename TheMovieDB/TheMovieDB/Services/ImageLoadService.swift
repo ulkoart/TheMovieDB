@@ -47,6 +47,7 @@ final class ImageLoadService: ImageLoadServiceProtocol {
     }
     
     func getImageFrom(_ urlString: String, completion: @escaping GetImageFromCompletion) {
+        
         guard let cashedImage = imageCacheService.getCashedImage(url: urlString) else {
             downloadImage(urlString: urlString, completion: completion)
             return
