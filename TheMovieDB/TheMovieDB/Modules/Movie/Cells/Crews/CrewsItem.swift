@@ -77,6 +77,7 @@ final class CrewsItem: UICollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
         nameLabel.text = nil
+        departmentLabel.text = nil
     }
     
     required init?(coder: NSCoder) {
@@ -88,7 +89,16 @@ final class CrewsItem: UICollectionViewCell {
         if let department = cast.department {
             departmentLabel.text = "\(department.rawValue)"
         }
-        let imageUrlString = "https://image.tmdb.org/t/p/w500\(cast.profilePath ?? "")"
+        
+        if let profilePath = cast.profilePath {
+            loadProfilePath(profilePath)
+        } else {
+            imageView.image = UIImage(named: "avatar_placeholder")
+        }
+    }
+    
+    private func loadProfilePath(_ profilePath: String) {
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(profilePath)"
         
         imageNetworkService.getImageFrom(imageUrlString) { [weak self] image in
             guard let image = image else { return }

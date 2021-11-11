@@ -64,7 +64,16 @@ final class CastsItem: UICollectionViewCell {
     
     func configure(with cast: Cast) {
         nameLabel.text = cast.name
-        let imageUrlString = "https://image.tmdb.org/t/p/w500\(cast.profilePath ?? "")"
+        
+        if let profilePath = cast.profilePath {
+            loadProfilePath(profilePath)
+        } else {
+            imageView.image = UIImage(named: "avatar_placeholder")
+        }
+    }
+    
+    private func loadProfilePath(_ profilePath: String) {
+        let imageUrlString = "https://image.tmdb.org/t/p/w500\(profilePath)"
         
         imageNetworkService.getImageFrom(imageUrlString) { [weak self] image in
             guard let image = image else { return }

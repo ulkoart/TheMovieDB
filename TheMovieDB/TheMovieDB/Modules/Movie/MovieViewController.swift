@@ -28,6 +28,7 @@ final class MovieViewController: IndicationViewController {
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.register(MovieInfo.self, forCellReuseIdentifier: MovieInfo.identifier)
         $0.register(MovieOverview.self, forCellReuseIdentifier: MovieOverview.identifier)
         $0.register(VoteBlock.self, forCellReuseIdentifier: VoteBlock.identifier)
         $0.register(CastsCell.self, forCellReuseIdentifier: CastsCell.identifier)
@@ -106,18 +107,6 @@ extension MovieViewController: MovieViewControllerProtocol {
     
     private func configureHeaderView(with movieDetail: MovieDetailResponse) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
-        var releaseDateString = "дата релиза не известна"
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-dd-mm"
-        let releaseDate = dateFormatter.date(from: movieDetail.releaseDate)
-        dateFormatter.dateFormat = "YYYY"
-        
-        if let releaseDate = releaseDate {
-            releaseDateString = dateFormatter.string(from: releaseDate)
-        }
-        
-        let genresString = movieDetail.genres.map { $0.name }.joined(separator: ", ")
-        headerView.configure(with: "\(releaseDateString), \(genresString)")
         let imageUrlString = "https://image.tmdb.org/t/p/w500\(movieDetail.posterPath)"
 
         imageNetworkService.getImageFrom(imageUrlString) { image in
@@ -146,7 +135,7 @@ extension MovieViewController: UITableViewDelegate {
 extension MovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if movieDetail == nil && movieCredits == nil { return 0 }
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -161,21 +150,31 @@ extension MovieViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieInfo.identifier, for: indexPath) as? MovieInfo
+            else { fatalError() }
+            cell.configure(
+                title: movieDetail.title,
+                voteAverage: movieDetail.voteAverage,
+                releaseDate: movieDetail.releaseDate,
+                genres: movieDetail.genres
+            )
+            return cell
+        case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieOverview.identifier, for: indexPath) as? MovieOverview
             else { fatalError() }
             cell.configure(overview: movieDetail.overview)
             return cell
-        case 1:
+        case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: VoteBlock.identifier, for: indexPath) as? VoteBlock
             else { fatalError() }
             cell.configure(vote: movieDetail.voteAverage, voteCount: movieDetail.voteCount)
             return cell
-        case 2:
+        case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CastsCell.identifier, for: indexPath) as? CastsCell
             else { fatalError() }
             cell.casts = movieCredits.cast
             return cell
-        case 3:
+        case 4:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CrewsCell.identifier, for: indexPath) as? CrewsCell
             else { fatalError() }
             cell.crews = movieCredits.crew

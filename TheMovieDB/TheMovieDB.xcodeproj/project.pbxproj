@@ -35,6 +35,7 @@
 		CEB78AF02726DAF800D7F0D3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AEF2726DAF800D7F0D3 /* HomeViewController.swift */; };
 		CEB78AF42726F8AF00D7F0D3 /* TrendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AF32726F8AF00D7F0D3 /* TrendsCell.swift */; };
 		CEB78AF62727210300D7F0D3 /* TrendItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AF52727210300D7F0D3 /* TrendItem.swift */; };
+		CEBB890D273CF1D300D4CB87 /* MovieInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB890C273CF1D300D4CB87 /* MovieInfo.swift */; };
 		CEBE117027391B25004052A4 /* MovieCreditsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBE116F27391B25004052A4 /* MovieCreditsResponse.swift */; };
 		CEBE117327393A4A004052A4 /* VoteBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBE117227393A4A004052A4 /* VoteBlock.swift */; };
 		CECAB9242738488C00D9A673 /* StatusBarStyleNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */; };
@@ -91,6 +92,7 @@
 		CEB78AEF2726DAF800D7F0D3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CEB78AF32726F8AF00D7F0D3 /* TrendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendsCell.swift; sourceTree = "<group>"; };
 		CEB78AF52727210300D7F0D3 /* TrendItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendItem.swift; sourceTree = "<group>"; };
+		CEBB890C273CF1D300D4CB87 /* MovieInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieInfo.swift; sourceTree = "<group>"; };
 		CEBE116F27391B25004052A4 /* MovieCreditsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCreditsResponse.swift; sourceTree = "<group>"; };
 		CEBE117227393A4A004052A4 /* VoteBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteBlock.swift; sourceTree = "<group>"; };
 		CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarStyleNavigationController.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 		CE22B88A27356FAE00EF1121 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				CEBB890C273CF1D300D4CB87 /* MovieInfo.swift */,
 				CE6710322735965400745683 /* MovieOverview.swift */,
 				CEBE117227393A4A004052A4 /* VoteBlock.swift */,
 				CE560D20273BB17400FB5F62 /* Casts */,
@@ -450,6 +453,7 @@
 				CEB78AF02726DAF800D7F0D3 /* HomeViewController.swift in Sources */,
 				CED0E528272AADF2001DD0F0 /* TvPopularItem.swift in Sources */,
 				CE36F3C427300F4900EC9D36 /* MovieViewController.swift in Sources */,
+				CEBB890D273CF1D300D4CB87 /* MovieInfo.swift in Sources */,
 				CE67103527359AB000745683 /* MoviePresenter.swift in Sources */,
 				CED0E4FC27297237001DD0F0 /* ImageLoadService.swift in Sources */,
 				CEB78AD32726D46900D7F0D3 /* AppDelegate.swift in Sources */,
