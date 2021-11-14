@@ -18,12 +18,14 @@ protocol HomePresenterProtocol: AnyObject {
     func loadMoreNowPlaying()
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie])
     func showMovie(movieId: Int)
+    func showErrorMessage(text: String)
 }
 
 final class HomePresenter: HomePresenterProtocol {
     weak var viewController: HomeViewIndicationProtocol?
     var interactor: HomeInteractorProtocol?
     var router: HomeRouterProtocol?
+    
     /// Запросы на загрузку данных для экрана
     func loadData() {
         DispatchQueue.main.async { [weak self] in
@@ -41,7 +43,7 @@ final class HomePresenter: HomePresenterProtocol {
             self?.viewController?.hideLoadView()
         }
     }
-    
+    /// Открыть детальный экрна с фильмом
     func showMovie(movieId: Int) {
         guard let viewController = viewController else { return }
         router?.presentMovieScreen(from: viewController, for: movieId)
@@ -55,6 +57,12 @@ final class HomePresenter: HomePresenterProtocol {
         viewController?.nowPlaying.append(contentsOf: nowPlaying)
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.addNowPlaying()
+        }
+    }
+    
+    func showErrorMessage(text: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.showAlert(title: "Ой-Ой", message: text)
         }
     }
 }

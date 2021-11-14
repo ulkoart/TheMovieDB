@@ -51,29 +51,29 @@ final class TMDBNetworkService {
             case .getTrending:
                 let path = "/trending/all/week"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-            
+                
             case .getNowPlaying(let page):
-
+                
                 let queryItems = [
                     URLQueryItem(name: "page", value: "\(page)")
                 ] + Endpoints.defaultQueryItems
                 
                 let path = "/movie/now_playing"
                 return makeUrl(path: path, queryItems: queryItems)
-            
+                
             case .getTvPopular:
                 let path = "/tv/popular"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-            
+                
             case .searchMovie(let query):
                 let path = "/search/movie"
                 
                 let queryItems = [
                     URLQueryItem(name: "query", value: query)
                 ] + Endpoints.defaultQueryItems
-                    
+                
                 return makeUrl(path: path, queryItems: queryItems)
-            
+                
             case .getMovieDetail(let movieId):
                 let path = "/movie/\(movieId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
@@ -89,58 +89,59 @@ final class TMDBNetworkService {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         let handler: URLSessionHandler = { data, _, _ in
+            
             guard let data = data else { fatalError() }
             
             do {
                 let decodedObject = try self.decoder.decode(responseType, from: data)
                 completion(decodedObject, nil)
             } catch {
-                print(url)
-                fatalError()
+                completion(nil, NetworkServiceError.badData)
             }
         }
         let task = session.dataTask(with: url, completionHandler: handler)
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) { task.resume() }
     }
 }
 
 extension TMDBNetworkService: TMDBNetworkServiceProtocol {
-    func getTrending(completion: @escaping GetTrendingResponse) {
+    func getTrending(completion: @escaping (GetTrendingResponse) -> Void) {
         guard let url = Endpoints.getTrending.url else { return }
         
-        GETRequest(url: url, responseType: TrendingResponse.self) { trendingResponse, _ in
-            guard let trendingResponse = trendingResponse else { fatalError() }
-            completion(trendingResponse.results, nil)
+        GETRequest(url: url, responseType: TrendingResponse.self) { trendingResponse, error in
+            if let error = error {
+                completion(.failure(error as? NetworkServiceError ?? .unknown))
+            } else {
+                guard let trendingResponse = trendingResponse else { fatalError() }
+                completion(.success(trendingResponse))
+            }
         }
     }
     
-    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse) {
+    func getNowPlaying(page: Int, completion: @escaping (GetNowPlayingResponse) -> Void) {
         guard let url = Endpoints.getNowPlaying(page).url else { return }
-  
         GETRequest(url: url, responseType: NowPlayingResponse.self) { nowPlayingResponse, _ in
             guard let nowPlayingResponse = nowPlayingResponse else { fatalError() }
-            completion(nowPlayingResponse.results, nil)
+            completion(.success(nowPlayingResponse))
         }
     }
     
-    func getTvPopular(completion: @escaping GetTvPopularResponse) {
+    func getTvPopular(completion: @escaping (GetTvPopularResponse) -> Void) {
         guard let url = Endpoints.getTvPopular.url else { return }
-        
         GETRequest(url: url, responseType: TvPopularResponse.self) { tvPopularResponse, _ in
             guard let tvPopularResponse = tvPopularResponse else { fatalError() }
-            completion(tvPopularResponse.results, nil)
+            completion(.success(tvPopularResponse))
         }
+        
     }
     
-    func searchMovie(query: String, completion: @escaping GetSearchMovieResponse) {
+    func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void) {
         guard let url = Endpoints.searchMovie(query).url else { return }
         
         GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
             guard let searchMovieResponse = searchMovieResponse else { fatalError() }
-            completion(searchMovieResponse.results, nil)
+            completion(.success(searchMovieResponse))
         }
     }
     
@@ -158,7 +159,6 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     
     func getMovieCredits(movieId: Int, completion: @escaping (GetMovieCreditsResponse) -> Void) {
         guard let url = Endpoints.getMovieCredits(movieId).url else { return }
-        
         GETRequest(url: url, responseType: MovieCreditsResponse.self.self) { getMovieCreditsResponse, _ in
             guard let getMovieCreditsResponse = getMovieCreditsResponse else {
                 completion(.failure(.unknown))

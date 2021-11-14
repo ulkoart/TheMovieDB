@@ -9,6 +9,6 @@ import Foundation
 
 /// Ответ с трендами, возвращаемый API
 struct TrendingResponse: Decodable {
-    let page: Int
+    let page: String
     let results: [Trend]
 }

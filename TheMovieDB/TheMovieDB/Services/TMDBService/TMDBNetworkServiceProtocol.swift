@@ -8,12 +8,11 @@
 import Foundation
 
 typealias URLSessionHandler = (Data?, URLResponse?, Error?) -> Void
-typealias GetTrendingResponse = ([Trend], Error?) -> Void
-typealias GetNowPlayingResponse = ([NowPlayingMovie], Error?) -> Void
-typealias GetTvPopularResponse = ([TvPopular], Error?) -> Void
-typealias GetSearchMovieResponse = ([SearchMovie], Error?) -> Void
 
-/// С использованием Result
+typealias GetTrendingResponse = Result<TrendingResponse, NetworkServiceError>
+typealias GetNowPlayingResponse = Result<NowPlayingResponse, NetworkServiceError>
+typealias GetTvPopularResponse = Result<TvPopularResponse, NetworkServiceError>
+typealias GetSearchMovieResponse = Result<SearchMovieResponse, NetworkServiceError>
 typealias GetMovieDetailResponse = Result<MovieDetailResponse, NetworkServiceError>
 typealias GetMovieCreditsResponse = Result<MovieCreditsResponse, NetworkServiceError>
 
@@ -21,21 +20,21 @@ protocol TMDBNetworkServiceProtocol {
     
     /// Получение списка стендов
     /// - Parameter completion: ([Movie], Error?) -> Void
-    func getTrending(completion: @escaping GetTrendingResponse)
+    func getTrending(completion: @escaping (GetTrendingResponse) -> Void)
     
     /// Получение списка фильмов идущих в кино в данный момент
     /// - Parameter completion: ([NowPlayingMovie], Error?) -> Void
-    func getNowPlaying(page: Int, completion: @escaping GetNowPlayingResponse)
+    func getNowPlaying(page: Int, completion: @escaping (GetNowPlayingResponse) -> Void)
     
     /// Получение списка популярных сериалов
     /// - Parameter completion: ([TvPopular], Error?) -> Void
-    func getTvPopular(completion: @escaping GetTvPopularResponse)
+    func getTvPopular(completion: @escaping (GetTvPopularResponse) -> Void)
     
     /// Получение списка фильмов по поисковому запросу
     /// - Parameters:
     ///   - query: поисковой запрос
     ///   - completion: ([SearchMovie], Error?) -> Void
-    func searchMovie(query: String, completion: @escaping GetSearchMovieResponse)
+    func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void)
     
     /// Получение детальной информации о фильме
     /// - Parameters:

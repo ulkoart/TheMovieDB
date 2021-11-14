@@ -29,21 +29,37 @@ final class HomeInteractor: HomeInteractorProtocol {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        service.getTrending { trendsFromApi, _ in
+        service.getTrending { trendsResponse in
             dispatchGroup.leave()
-            trends = trendsFromApi
+            
+            switch trendsResponse {
+            case .success(let data):
+                trends = data.results
+            case .failure(let error):
+                self.presenter?.showErrorMessage(text: error.message)
+            }
         }
 
         dispatchGroup.enter()
-        service.getNowPlaying(page: nowPlayingPage) { nowPlayingFromApi, _ in
+        service.getNowPlaying(page: nowPlayingPage) { nowPlayingResponse in
             dispatchGroup.leave()
-            nowPlaying = nowPlayingFromApi
+            switch nowPlayingResponse {
+            case .success(let data):
+                nowPlaying = data.results
+            case .failure(let error):
+                print(error)
+            }
         }
         
         dispatchGroup.enter()
-        service.getTvPopular { tvPopularFromApi, _ in
+        service.getTvPopular { tvPopularResponse in
             dispatchGroup.leave()
-            tvPopular = tvPopularFromApi
+            switch tvPopularResponse {
+            case .success(let data):
+                tvPopular = data.results
+            case .failure(let error):
+                print(error)
+            }
         }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
@@ -53,8 +69,13 @@ final class HomeInteractor: HomeInteractorProtocol {
     
     func retrieveMoreNowPlaying() {
         nowPlayingPage += 1
-        service.getNowPlaying(page: nowPlayingPage) { [weak self] nowPlayingFromApi, _ in
-            self?.presenter?.loadMoreNowPlayingSuccess(nowPlaying: nowPlayingFromApi)
+        service.getNowPlaying(page: nowPlayingPage) { [weak self] nowPlayingResponse in
+            switch nowPlayingResponse {
+            case .success(let data):
+                self?.presenter?.loadMoreNowPlayingSuccess(nowPlaying: data.results)
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }
