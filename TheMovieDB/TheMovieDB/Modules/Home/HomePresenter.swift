@@ -18,6 +18,7 @@ protocol HomePresenterProtocol: AnyObject {
     func loadMoreNowPlaying()
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie])
     func showMovie(movieId: Int)
+    func showTvSerial(tvSerialId: Int)
     func showErrorMessage(text: String)
 }
 
@@ -47,6 +48,12 @@ final class HomePresenter: HomePresenterProtocol {
     func showMovie(movieId: Int) {
         guard let viewController = viewController else { return }
         router?.presentMovieScreen(from: viewController, for: movieId)
+    }
+    
+    /// Открыть детальный экрна с сериалом
+    func showTvSerial(tvSerialId: Int) {
+        guard let viewController = viewController else { return }
+        router?.presentTvSerial(from: viewController, for: tvSerialId)
     }
     
     func loadMoreNowPlaying() {

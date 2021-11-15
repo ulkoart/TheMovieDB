@@ -93,6 +93,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
                 withIdentifier: NowPlayingCell.identifier, for: indexPath
             ) as? NowPlayingCell else { fatalError() }
             cell.nowPlaying = self.nowPlaying
+            cell.delegate = self
             cell.loadMoreDelegat = self
             return cell
         case 2:
@@ -145,7 +146,7 @@ extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
         case .movie:
             presenter?.showMovie(movieId: trend.id)
         case .tvSerial:
-            print("need to be implemented")
+            presenter?.showTvSerial(tvSerialId: trend.id)
         }
     }
 }
@@ -153,5 +154,11 @@ extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
 extension HomeViewController: NowPlayingCellLoadMoreDelegate {
     func loadMoreNowPlaying() {
         presenter?.loadMoreNowPlaying()
+    }
+}
+
+extension HomeViewController: NowPlayingCellDidSelectItemAtDelegate {
+    func nowPlayingDidSelect(with nowPlayingMovie: NowPlayingMovie) {
+        presenter?.showMovie(movieId: nowPlayingMovie.id)
     }
 }

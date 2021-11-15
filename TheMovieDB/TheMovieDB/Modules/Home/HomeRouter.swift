@@ -10,6 +10,7 @@ import UIKit
 protocol HomeRouterProtocol: AnyObject {
     static func createModule() -> UIViewController
     func presentMovieScreen(from view: HomeViewControllerProtocol, for movieId: Int)
+    func presentTvSerial(from view: HomeViewControllerProtocol, for tvSerialId: Int)
 }
 
 final class HomeRouter: HomeRouterProtocol {
@@ -31,7 +32,12 @@ final class HomeRouter: HomeRouterProtocol {
     func presentMovieScreen(from view: HomeViewControllerProtocol, for movieId: Int) {
         let movieViewController = MovieRouter.createModule(with: movieId)
         guard let view = view as? UIViewController else { fatalError("Invalid View Protocol type") }
-        
         view.navigationController?.pushViewController(movieViewController, animated: true)
+    }
+    
+    func presentTvSerial(from view: HomeViewControllerProtocol, for tvSerialId: Int) {
+        let tvSerialViewController = TvSerialRouter.createModule(with: tvSerialId)
+        guard let view = view as? UIViewController else { fatalError("Invalid View Protocol type") }
+        view.navigationController?.pushViewController(tvSerialViewController, animated: true)
     }
 }

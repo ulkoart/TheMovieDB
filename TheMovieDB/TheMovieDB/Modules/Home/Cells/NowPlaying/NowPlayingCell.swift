@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol NowPlayingCellDidSelectItemAtDelegate: AnyObject {
+    func nowPlayingDidSelect(with nowPlayingMovie: NowPlayingMovie)
+}
+
 protocol NowPlayingCellLoadMoreDelegate: AnyObject {
     func loadMoreNowPlaying()
 }
@@ -14,6 +18,9 @@ protocol NowPlayingCellLoadMoreDelegate: AnyObject {
 class NowPlayingCell: UITableViewCell {
     
     static let identifier = "NowPlayingCell"
+    
+    /// делегат обрабатывающий нажатия на ячейку
+    weak var delegate: NowPlayingCellDidSelectItemAtDelegate?
     
     /// делегат для подругзки новых страниц
     var loadMoreDelegat: NowPlayingCellLoadMoreDelegate?
@@ -94,6 +101,11 @@ extension NowPlayingCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == nowPlaying.count - 3 else { return }
         loadMoreDelegat?.loadMoreNowPlaying()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie: NowPlayingMovie = nowPlaying[indexPath.item]
+        delegate?.nowPlayingDidSelect(with: movie)
     }
 }
 

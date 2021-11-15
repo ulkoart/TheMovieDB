@@ -44,6 +44,8 @@ final class TMDBNetworkService {
         case searchMovie(String)
         case getMovieDetail(Int)
         case getMovieCredits(Int)
+        case getTvSerialDetail(Int)
+        case getTvSerialCredits(Int)
         
         var url: URL? {
             switch self {
@@ -77,9 +79,17 @@ final class TMDBNetworkService {
             case .getMovieDetail(let movieId):
                 let path = "/movie/\(movieId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-            /// url для получения актеров и персонала
+            /// url для получения актеров и персонала фильма
             case .getMovieCredits(let movieId):
                 let path = "/movie/\(movieId)/credits"
+                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            /// url для деталей фильмов
+            case .getTvSerialDetail(let tvSerialId):
+                let path = "/tv/\(tvSerialId)"
+                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            /// url для получения актеров и персонала сериала
+            case .getTvSerialCredits(let tvSerialId):
+                let path = "/tv/\(tvSerialId)/credits"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
             }
         }
@@ -113,6 +123,7 @@ final class TMDBNetworkService {
 }
 
 extension TMDBNetworkService: TMDBNetworkServiceProtocol {
+    
     func getTrending(completion: @escaping (GetTrendingResponse) -> Void) {
         guard let url = Endpoints.getTrending.url else { return }
         
@@ -172,6 +183,32 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func getMovieCredits(movieId: Int, completion: @escaping (GetMovieCreditsResponse) -> Void) {
         guard let url = Endpoints.getMovieCredits(movieId).url else { return }
         GETRequest(url: url, responseType: MovieCreditsResponse.self.self) { getMovieCreditsResponse, _ in
+            guard let getMovieCreditsResponse = getMovieCreditsResponse else {
+                completion(.failure(.unknown))
+                return
+            }
+            completion(.success(getMovieCreditsResponse))
+        }
+    }
+    
+    func getTvSerialDetail(tvSerialId: Int, completion: @escaping (GetTvSerialDetailResponse) -> Void) {
+        guard let url = Endpoints.getTvSerialDetail(tvSerialId).url else { return }
+        GETRequest(url: url, responseType: TvSerialDetailResponse.self) { getTvSerialDetailResponse, error in
+            if let error = error {
+                completion(.failure(error as? NetworkServiceError ?? .unknown))
+            } else {
+                guard let getTvSerialDetailResponse = getTvSerialDetailResponse else {
+                    completion(.failure(.unknown))
+                    return
+                }
+                completion(.success(getTvSerialDetailResponse))
+            }
+        }
+    }
+    
+    func getTvSerialCredits(tvSerialId: Int, completion: @escaping (GetTvSerialCreditsResponse) -> Void) {
+        guard let url = Endpoints.getTvSerialCredits(tvSerialId).url else { return }
+        GETRequest(url: url, responseType: TvSerialCreditsResponse.self.self) { getMovieCreditsResponse, _ in
             guard let getMovieCreditsResponse = getMovieCreditsResponse else {
                 completion(.failure(.unknown))
                 return

@@ -15,6 +15,8 @@ typealias GetTvPopularResponse = Result<TvPopularResponse, NetworkServiceError>
 typealias GetSearchMovieResponse = Result<SearchMovieResponse, NetworkServiceError>
 typealias GetMovieDetailResponse = Result<MovieDetailResponse, NetworkServiceError>
 typealias GetMovieCreditsResponse = Result<MovieCreditsResponse, NetworkServiceError>
+typealias GetTvSerialDetailResponse = Result<TvSerialDetailResponse, NetworkServiceError>
+typealias GetTvSerialCreditsResponse = Result<TvSerialCreditsResponse, NetworkServiceError>
 
 protocol TMDBNetworkServiceProtocol {
     
@@ -47,4 +49,16 @@ protocol TMDBNetworkServiceProtocol {
     ///   - movieId: ID фильма
     ///   - completion: Result<MovieCreditsResponse, NetworkServiceError>
     func getMovieCredits(movieId: Int, completion: @escaping (GetMovieCreditsResponse) -> Void)
+    
+    /// Получение детальной информации о сериале
+    /// - Parameters:
+    ///   - movieId: ID сериала
+    ///   - completion: Result<TvSerialDetailResponse, NetworkServiceError>
+    func getTvSerialDetail(tvSerialId: Int, completion: @escaping (GetTvSerialDetailResponse) -> Void)
+    
+    /// Получение списка актеров сериала
+    /// - Parameters:
+    ///   - movieId: ID сериала
+    ///   - completion: Result<TvSerialCreditsResponse, NetworkServiceError>
+    func getTvSerialCredits(tvSerialId: Int, completion: @escaping (GetTvSerialCreditsResponse) -> Void)
 }
