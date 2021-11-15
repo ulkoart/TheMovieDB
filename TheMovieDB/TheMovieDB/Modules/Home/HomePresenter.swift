@@ -62,7 +62,7 @@ final class HomePresenter: HomePresenterProtocol {
     
     func showErrorMessage(text: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.viewController?.showAlert(title: "Ой-Ой", message: text)
+            self?.viewController?.showAlert(title: "Ой-Ой", message: text, completion: nil)
         }
     }
 }

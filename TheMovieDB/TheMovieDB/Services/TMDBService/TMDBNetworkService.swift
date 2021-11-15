@@ -47,11 +47,11 @@ final class TMDBNetworkService {
         
         var url: URL? {
             switch self {
-            
+            /// url трендов текущей недели
             case .getTrending:
                 let path = "/trending/all/week"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-                
+            /// url фильмов идущих в кино
             case .getNowPlaying(let page):
                 
                 let queryItems = [
@@ -60,11 +60,11 @@ final class TMDBNetworkService {
                 
                 let path = "/movie/now_playing"
                 return makeUrl(path: path, queryItems: queryItems)
-                
+            /// url популярных сериалов
             case .getTvPopular:
                 let path = "/tv/popular"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-                
+            /// url для поиска фильмов
             case .searchMovie(let query):
                 let path = "/search/movie"
                 
@@ -73,11 +73,11 @@ final class TMDBNetworkService {
                 ] + Endpoints.defaultQueryItems
                 
                 return makeUrl(path: path, queryItems: queryItems)
-                
+            /// url для деталей фильмов
             case .getMovieDetail(let movieId):
                 let path = "/movie/\(movieId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-                
+            /// url для получения актеров и персонала
             case .getMovieCredits(let movieId):
                 let path = "/movie/\(movieId)/credits"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
@@ -89,9 +89,16 @@ final class TMDBNetworkService {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        let handler: URLSessionHandler = { data, _, _ in
+        let handler: URLSessionHandler = { data, response, _ in
             
-            guard let data = data else { fatalError() }
+            guard
+                let data = data,
+                let httpResponse = response as? HTTPURLResponse,
+                (200..<300).contains(httpResponse.statusCode)
+            else {
+                completion(nil, NetworkServiceError.network)
+                return
+            }
             
             do {
                 let decodedObject = try self.decoder.decode(responseType, from: data)
@@ -148,12 +155,17 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     func getMovieDetail(movieId: Int, completion: @escaping (GetMovieDetailResponse) -> Void) {
         guard let url = Endpoints.getMovieDetail(movieId).url else { return }
         
-        GETRequest(url: url, responseType: MovieDetailResponse.self.self) { getMovieDetailResponse, _ in
-            guard let getMovieDetailResponse = getMovieDetailResponse else {
-                completion(.failure(.unknown))
-                return
+        GETRequest(url: url, responseType: MovieDetailResponse.self.self) { getMovieDetailResponse, error in
+            
+            if let error = error {
+                completion(.failure(error as? NetworkServiceError ?? .unknown))
+            } else {
+                guard let getMovieDetailResponse = getMovieDetailResponse else {
+                    completion(.failure(.unknown))
+                    return
+                }
+                completion(.success(getMovieDetailResponse))
             }
-            completion(.success(getMovieDetailResponse))
         }
     }
     

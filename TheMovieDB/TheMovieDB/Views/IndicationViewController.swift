@@ -10,7 +10,7 @@ import UIKit
 protocol IndicationViewControllerProtocol {
     func showLoadView()
     func hideLoadView()
-    func showAlert(title: String, message: String)
+    func showAlert(title: String, message: String, completion: (() -> Void)? )
 }
 
 class IndicationViewController: UIViewController {
@@ -40,10 +40,13 @@ extension IndicationViewController: IndicationViewControllerProtocol {
         loadView.removeFromSuperview()
     }
     
-    func showAlert(title: String, message: String) {
+    func showAlert(title: String, message: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            guard let completion = completion else { return }
+            completion()
+        }
         alert.addAction(okAction)
-        self.present(alert, animated: true)
+        self.present(alert, animated: true, completion: nil)
     }
 }

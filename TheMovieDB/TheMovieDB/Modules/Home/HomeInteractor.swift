@@ -47,7 +47,7 @@ final class HomeInteractor: HomeInteractorProtocol {
             case .success(let data):
                 nowPlaying = data.results
             case .failure(let error):
-                print(error)
+                self.presenter?.showErrorMessage(text: error.message)
             }
         }
         
@@ -58,7 +58,7 @@ final class HomeInteractor: HomeInteractorProtocol {
             case .success(let data):
                 tvPopular = data.results
             case .failure(let error):
-                print(error)
+                self.presenter?.showErrorMessage(text: error.message)
             }
         }
         
@@ -74,7 +74,7 @@ final class HomeInteractor: HomeInteractorProtocol {
             case .success(let data):
                 self?.presenter?.loadMoreNowPlayingSuccess(nowPlaying: data.results)
             case .failure(let error):
-                print(error)
+                self?.presenter?.showErrorMessage(text: error.message)
             }
         }
     }

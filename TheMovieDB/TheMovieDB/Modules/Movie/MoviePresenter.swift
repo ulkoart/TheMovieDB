@@ -14,6 +14,7 @@ protocol MoviePresenterProtocol: AnyObject {
     
     func loadData(movieId: Int)
     func loadDataSuccess(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse)
+    func loadDataFailure(errorString: String)
 }
 
 final class MoviePresenter: MoviePresenterProtocol {
@@ -34,5 +35,9 @@ final class MoviePresenter: MoviePresenterProtocol {
             self?.viewController?.configureData(movieDetail: movieDetail, movieCredits: movieCredits)
             self?.viewController?.reloadData()
         }
+    }
+    
+    func loadDataFailure(errorString: String) {
+        self.viewController?.dataFailure(text: errorString)
     }
 }

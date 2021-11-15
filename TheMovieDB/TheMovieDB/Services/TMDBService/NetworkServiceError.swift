@@ -13,11 +13,11 @@ enum NetworkServiceError: Error {
     var message: String {
         switch self {
         case .unknown:
-            return "unknown error"
+            return "Computer says no"
         case .badData:
             return "Json says no"
         case .network:
-            return "Computer says no"
+            return "Network says no"
         }
     }
 

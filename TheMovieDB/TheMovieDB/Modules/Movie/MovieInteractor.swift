@@ -23,7 +23,7 @@ final class MovieInteractor: MovieInteractorProtocol {
     func retrieveData(movieId: Int) {
         retrieveMovieData(movieId: movieId)
     }
-    
+         
     private func retrieveMovieData(movieId: Int) {
         dispatchGroup.enter()
         service.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
@@ -44,7 +44,7 @@ final class MovieInteractor: MovieInteractorProtocol {
         case .success(let data):
             movieDetail = data
         case .failure(let error):
-            print(error)
+            presenter?.loadDataFailure(errorString: error.message)
         }
     }
     
@@ -54,7 +54,7 @@ final class MovieInteractor: MovieInteractorProtocol {
         case .success(let data):
             movieCredits = data
         case .failure(let error):
-            print(error)
+            presenter?.loadDataFailure(errorString: error.message)
         }
     }
 }

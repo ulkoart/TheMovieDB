@@ -12,6 +12,7 @@ protocol MovieViewControllerProtocol: AnyObject {
     
     func configureData(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse)
     func reloadData()
+    func dataFailure(text: String)
 }
 
 final class MovieViewController: IndicationViewController {
@@ -56,14 +57,14 @@ final class MovieViewController: IndicationViewController {
         guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
         navigationController.statusBarEnterDarkBackground()
     }
-
+    
     private func configure() {
         let headerView = StretchyTableHeader(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 350))
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableHeaderView = headerView
-
+        
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -82,7 +83,7 @@ final class MovieViewController: IndicationViewController {
         let rightButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareMovie))
         navigationItem.rightBarButtonItem = rightButton
     }
-        
+    
     private func configureNavigationBarStyle(tintColor: UIColor, backgroundImage: UIImage?) {
         let animation = CATransition()
         animation.duration = 0.2
@@ -94,11 +95,19 @@ final class MovieViewController: IndicationViewController {
     }
     
     @objc private func shareMovie() {
-        self.showAlert(title: "share", message: "Movie")
+        self.showAlert(title: "share", message: "Movie", completion: nil)
     }
 }
 
 extension MovieViewController: MovieViewControllerProtocol {
+    func dataFailure(text: String) {
+        DispatchQueue.main.async {
+            self.showAlert(title: "Ой-Ой", message: text) {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
     func configureData(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse) {
         self.movieDetail = movieDetail
         self.movieCredits = movieCredits
@@ -108,7 +117,7 @@ extension MovieViewController: MovieViewControllerProtocol {
     private func configureHeaderView(with movieDetail: MovieDetailResponse) {
         guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
         let imageUrlString = "https://image.tmdb.org/t/p/w500\(movieDetail.posterPath)"
-
+        
         imageNetworkService.getImageFrom(imageUrlString) { image in
             guard let image = image else { return }
             DispatchQueue.main.async {
