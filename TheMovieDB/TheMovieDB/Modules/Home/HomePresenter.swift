@@ -13,16 +13,26 @@ protocol HomePresenterProtocol: AnyObject {
     var viewController: HomeViewIndicationProtocol? { get set }
     var interactor: HomeInteractorProtocol? { get set }
     var router: HomeRouterProtocol? { get set }
+    
     func loadData()
     func loadDataSuccess(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular])
+    
     func loadMoreNowPlaying()
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie])
+    
+    func loadMoreTrends()
+    func loadMoreTrendsSuccess(trends: [Trend])
+    
+    func loadMoreTvPopular()
+    func loadMoreTvPopularSuccess(tvPopular: [TvPopular])
+    
     func showMovie(movieId: Int)
     func showTvSerial(tvSerialId: Int)
     func showErrorMessage(text: String)
 }
 
 final class HomePresenter: HomePresenterProtocol {
+    
     weak var viewController: HomeViewIndicationProtocol?
     var interactor: HomeInteractorProtocol?
     var router: HomeRouterProtocol?
@@ -63,13 +73,35 @@ final class HomePresenter: HomePresenterProtocol {
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie]) {
         viewController?.nowPlaying.append(contentsOf: nowPlaying)
         DispatchQueue.main.async { [weak self] in
-            self?.viewController?.addNowPlaying()
+            self?.viewController?.reloadNowPlaying()
+        }
+    }
+    
+    func loadMoreTrends() {
+        interactor?.retrieveMoreTrends()
+    }
+    
+    func loadMoreTrendsSuccess(trends: [Trend]) {
+        viewController?.trends.append(contentsOf: trends)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.reloadTrends()
         }
     }
     
     func showErrorMessage(text: String) {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.showAlert(title: "Ой-Ой", message: text, completion: nil)
+        }
+    }
+    
+    func loadMoreTvPopular() {
+        interactor?.retrieveMoreTvPopular()
+    }
+    
+    func loadMoreTvPopularSuccess(tvPopular: [TvPopular]) {
+        viewController?.tvPopular.append(contentsOf: tvPopular)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.reloadTvPopular()
         }
     }
 }

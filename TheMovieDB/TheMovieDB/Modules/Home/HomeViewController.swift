@@ -14,7 +14,9 @@ protocol HomeViewControllerProtocol: AnyObject {
     var tvPopular: [TvPopular] { get set }
     
     func reloadRows()
-    func addNowPlaying()
+    func reloadNowPlaying()
+    func reloadTrends()
+    func reloadTvPopular()
 }
 
 final class HomeViewController: IndicationViewController {
@@ -87,6 +89,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendsCell.identifier, for: indexPath) as? TrendsCell else { fatalError() }
             cell.trends = self.trends
             cell.delegate = self
+            cell.loadMoreDelegate = self
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(
@@ -94,12 +97,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             ) as? NowPlayingCell else { fatalError() }
             cell.nowPlaying = self.nowPlaying
             cell.delegate = self
-            cell.loadMoreDelegat = self
+            cell.loadMoreDelegate = self
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: TvPopularCell.identifier, for: indexPath
             ) as? TvPopularCell else { fatalError() }
+            cell.delegate = self
+            cell.loadMoreDelegate = self
             cell.tvPopulars = self.tvPopular
             return cell
         default:
@@ -133,10 +138,22 @@ extension HomeViewController: HomeViewControllerProtocol {
         tableView.reloadRows(at: [tvPopularIndexPath], with: .left)
     }
     
-    func addNowPlaying() {
+    func reloadTrends() {
+        let trendsIndexPath = IndexPath(row: 0, section: 0)
+        guard let trendsCell = tableView.cellForRow(at: trendsIndexPath) as? TrendsCell else { return }
+        trendsCell.trends = self.trends
+    }
+    
+    func reloadNowPlaying() {
         let nowPlayingIndexPath = IndexPath(row: 1, section: 0)
-        guard let nowPlaying = tableView.cellForRow(at: nowPlayingIndexPath) as? NowPlayingCell else { return }
-        nowPlaying.nowPlaying = self.nowPlaying
+        guard let nowPlayingCell = tableView.cellForRow(at: nowPlayingIndexPath) as? NowPlayingCell else { return }
+        nowPlayingCell.nowPlaying = self.nowPlaying
+    }
+    
+    func reloadTvPopular() {
+        let tvPopularIndexPath = IndexPath(row: 2, section: 0)
+        guard let tvPopularCell = tableView.cellForRow(at: tvPopularIndexPath) as? TvPopularCell else { return }
+        tvPopularCell.tvPopulars = self.tvPopular
     }
 }
 
@@ -157,8 +174,26 @@ extension HomeViewController: NowPlayingCellLoadMoreDelegate {
     }
 }
 
+extension HomeViewController: TrendsCellLoadMoreDelegate {
+    func loadMoreTrends() {
+        presenter?.loadMoreTrends()
+    }
+}
+
 extension HomeViewController: NowPlayingCellDidSelectItemAtDelegate {
     func nowPlayingDidSelect(with nowPlayingMovie: NowPlayingMovie) {
         presenter?.showMovie(movieId: nowPlayingMovie.id)
+    }
+}
+
+extension HomeViewController: TvPopularCellDidSelectItemAtDelegate {
+    func tvPopularCellDidSelect(with tvPopular: TvPopular) {
+        presenter?.showTvSerial(tvSerialId: tvPopular.id)
+    }
+}
+
+extension HomeViewController: TvPopularLoadMoreDelegate {
+    func loadMoreTvPopular() {
+        presenter?.loadMoreTvPopular()
     }
 }

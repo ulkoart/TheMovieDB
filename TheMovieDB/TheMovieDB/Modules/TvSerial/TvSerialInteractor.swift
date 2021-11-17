@@ -45,7 +45,6 @@ final class TvSerialInteractor: TvSerialInteractorProtocol {
         case .success(let data):
             tvSerialDetail = data
         case .failure(let error):
-            print(1)
             presenter?.loadDataFailure(errorString: error.message)
         }
     }
@@ -56,7 +55,6 @@ final class TvSerialInteractor: TvSerialInteractorProtocol {
         case .success(let data):
             tvSerialCredits = data
         case .failure(let error):
-            print(2)
             presenter?.loadDataFailure(errorString: error.message)
         }
     }

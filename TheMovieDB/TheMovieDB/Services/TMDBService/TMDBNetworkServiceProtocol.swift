@@ -21,16 +21,19 @@ typealias GetTvSerialCreditsResponse = Result<TvSerialCreditsResponse, NetworkSe
 protocol TMDBNetworkServiceProtocol {
     
     /// Получение списка стендов
+    /// - Parameter page: номер страницы
     /// - Parameter completion: ([Movie], Error?) -> Void
-    func getTrending(completion: @escaping (GetTrendingResponse) -> Void)
+    func getTrending(page: Int, completion: @escaping (GetTrendingResponse) -> Void)
     
     /// Получение списка фильмов идущих в кино в данный момент
+    /// - Parameter page: номер страницы
     /// - Parameter completion: ([NowPlayingMovie], Error?) -> Void
     func getNowPlaying(page: Int, completion: @escaping (GetNowPlayingResponse) -> Void)
     
     /// Получение списка популярных сериалов
+    /// - Parameter page: номер страницы
     /// - Parameter completion: ([TvPopular], Error?) -> Void
-    func getTvPopular(completion: @escaping (GetTvPopularResponse) -> Void)
+    func getTvPopular(page: Int, completion: @escaping (GetTvPopularResponse) -> Void)
     
     /// Получение списка фильмов по поисковому запросу
     /// - Parameters:

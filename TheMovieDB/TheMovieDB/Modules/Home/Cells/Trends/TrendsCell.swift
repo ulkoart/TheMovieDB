@@ -11,9 +11,16 @@ protocol TrendsCellDidSelectItemAtDelegate: AnyObject {
     func trendDidSelect(with: Trend)
 }
 
+protocol TrendsCellLoadMoreDelegate: AnyObject {
+    func loadMoreTrends()
+}
+
 final class TrendsCell: UITableViewCell {
     
     static let identifier = "TrendsCell"
+    
+    /// делегат для подругзки новых страниц
+    weak var loadMoreDelegate: TrendsCellLoadMoreDelegate?
     
     /// делегат обрабатывающий нажатия на ячейку
     weak var delegate: TrendsCellDidSelectItemAtDelegate?
@@ -88,6 +95,11 @@ extension TrendsCell: UICollectionViewDataSource {
         let trend = trends[indexPath.item]
         cell.configure(with: trend)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard indexPath.row == trends.count - 2 else { return }
+        loadMoreDelegate?.loadMoreTrends()
     }
 }
 

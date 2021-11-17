@@ -38,9 +38,9 @@ final class TMDBNetworkService {
             return components.url
         }
         
-        case getTrending
+        case getTrending(Int)
         case getNowPlaying(Int)
-        case getTvPopular
+        case getTvPopular(Int)
         case searchMovie(String)
         case getMovieDetail(Int)
         case getMovieCredits(Int)
@@ -50,22 +50,29 @@ final class TMDBNetworkService {
         var url: URL? {
             switch self {
             /// url трендов текущей недели
-            case .getTrending:
-                let path = "/trending/all/week"
-                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
-            /// url фильмов идущих в кино
-            case .getNowPlaying(let page):
-                
+            case .getTrending(let page):
                 let queryItems = [
                     URLQueryItem(name: "page", value: "\(page)")
                 ] + Endpoints.defaultQueryItems
-                
+                let path = "/trending/all/week"
+                return makeUrl(path: path, queryItems: queryItems)
+            
+            /// url фильмов идущих в кино
+            case .getNowPlaying(let page):
+                let queryItems = [
+                    URLQueryItem(name: "page", value: "\(page)")
+                ] + Endpoints.defaultQueryItems
                 let path = "/movie/now_playing"
                 return makeUrl(path: path, queryItems: queryItems)
+            
             /// url популярных сериалов
-            case .getTvPopular:
+            case .getTvPopular(let page):
                 let path = "/tv/popular"
-                return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+                let queryItems = [
+                    URLQueryItem(name: "page", value: "\(page)")
+                ] + Endpoints.defaultQueryItems
+                return makeUrl(path: path, queryItems: queryItems)
+            
             /// url для поиска фильмов
             case .searchMovie(let query):
                 let path = "/search/movie"
@@ -75,18 +82,22 @@ final class TMDBNetworkService {
                 ] + Endpoints.defaultQueryItems
                 
                 return makeUrl(path: path, queryItems: queryItems)
+            
             /// url для деталей фильмов
             case .getMovieDetail(let movieId):
                 let path = "/movie/\(movieId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            
             /// url для получения актеров и персонала фильма
             case .getMovieCredits(let movieId):
                 let path = "/movie/\(movieId)/credits"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            
             /// url для деталей фильмов
             case .getTvSerialDetail(let tvSerialId):
                 let path = "/tv/\(tvSerialId)"
                 return makeUrl(path: path, queryItems: Endpoints.defaultQueryItems)
+            
             /// url для получения актеров и персонала сериала
             case .getTvSerialCredits(let tvSerialId):
                 let path = "/tv/\(tvSerialId)/credits"
@@ -124,9 +135,8 @@ final class TMDBNetworkService {
 
 extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     
-    func getTrending(completion: @escaping (GetTrendingResponse) -> Void) {
-        guard let url = Endpoints.getTrending.url else { return }
-        
+    func getTrending(page: Int, completion: @escaping (GetTrendingResponse) -> Void) {
+        guard let url = Endpoints.getTrending(page).url else { return }
         GETRequest(url: url, responseType: TrendingResponse.self) { trendingResponse, error in
             if let error = error {
                 completion(.failure(error as? NetworkServiceError ?? .unknown))
@@ -145,18 +155,16 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         }
     }
     
-    func getTvPopular(completion: @escaping (GetTvPopularResponse) -> Void) {
-        guard let url = Endpoints.getTvPopular.url else { return }
+    func getTvPopular(page: Int, completion: @escaping (GetTvPopularResponse) -> Void) {
+        guard let url = Endpoints.getTvPopular(page).url else { return }
         GETRequest(url: url, responseType: TvPopularResponse.self) { tvPopularResponse, _ in
             guard let tvPopularResponse = tvPopularResponse else { fatalError() }
             completion(.success(tvPopularResponse))
         }
-        
     }
     
     func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void) {
         guard let url = Endpoints.searchMovie(query).url else { return }
-        
         GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
             guard let searchMovieResponse = searchMovieResponse else { fatalError() }
             completion(.success(searchMovieResponse))
@@ -165,9 +173,7 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     
     func getMovieDetail(movieId: Int, completion: @escaping (GetMovieDetailResponse) -> Void) {
         guard let url = Endpoints.getMovieDetail(movieId).url else { return }
-        
         GETRequest(url: url, responseType: MovieDetailResponse.self.self) { getMovieDetailResponse, error in
-            
             if let error = error {
                 completion(.failure(error as? NetworkServiceError ?? .unknown))
             } else {

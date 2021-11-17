@@ -11,4 +11,10 @@ import Foundation
 struct TrendingResponse: Decodable {
     let page: Int
     let results: [Trend]
+    let totalPages: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case page, results
+        case totalPages = "total_pages"
+    }
 }
