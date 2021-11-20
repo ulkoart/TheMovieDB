@@ -46,8 +46,7 @@ final class HomeInteractor: HomeInteractorProtocol {
         
         dispatchGroup.enter()
         service.getTrending(page: trendsPage) { trendsResponse in
-            dispatchGroup.leave()
-            
+            defer { dispatchGroup.leave() }
             switch trendsResponse {
             case .success(let data):
                 trendsTotalPages = data.totalPages
@@ -59,7 +58,7 @@ final class HomeInteractor: HomeInteractorProtocol {
 
         dispatchGroup.enter()
         service.getNowPlaying(page: nowPlayingPage) { nowPlayingResponse in
-            dispatchGroup.leave()
+            defer { dispatchGroup.leave() }
             switch nowPlayingResponse {
             case .success(let data):
                 nowPlayingTotalPages = data.totalPages
@@ -71,7 +70,7 @@ final class HomeInteractor: HomeInteractorProtocol {
         
         dispatchGroup.enter()
         service.getTvPopular(page: tvPopularPage) { tvPopularResponse in
-            dispatchGroup.leave()
+            defer { dispatchGroup.leave() }
             switch tvPopularResponse {
             case .success(let data):
                 tvPopularTotalPages = data.totalPages

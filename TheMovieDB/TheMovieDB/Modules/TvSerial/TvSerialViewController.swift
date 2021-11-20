@@ -29,7 +29,11 @@ final class TvSerialViewController: IndicationViewController {
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        $0.register(СinemaInfo.self, forCellReuseIdentifier: СinemaInfo.identifier)
+        $0.register(СinemaOverview.self, forCellReuseIdentifier: СinemaOverview.identifier)
+        $0.register(СinemaVote.self, forCellReuseIdentifier: СinemaVote.identifier)
+        $0.register(CastsCell.self, forCellReuseIdentifier: CastsCell.identifier)
+        $0.register(CrewsCell.self, forCellReuseIdentifier: CrewsCell.identifier)
         return $0
     }(UITableView())
     
@@ -129,18 +133,62 @@ extension TvSerialViewController: TvSerialViewControllerProtocol {
 }
 
 extension TvSerialViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
 }
 
 extension TvSerialViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        if tvSerialDetail == nil && tvSerialCredits == nil { return 0 }
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "\(indexPath.row)"
-        return cell
+        guard
+            let tvSerialDetail = tvSerialDetail,
+            let tvSerialCredits = tvSerialCredits
+        else { fatalError() }
+        
+        switch indexPath.row {
+        case 0:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaInfo.identifier, for: indexPath) as? СinemaInfo
+            else { fatalError() }
+            cell.configure(
+                title: tvSerialDetail.name, voteAverage: tvSerialDetail.voteAverage,
+                releaseDate: tvSerialDetail.firstAirDate, genres: tvSerialDetail.genres)
+            return cell
+        case 1:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaOverview.identifier, for: indexPath) as? СinemaOverview
+            else { fatalError() }
+            cell.configure(overview: tvSerialDetail.overview)
+            return cell
+        case 2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaVote.identifier, for: indexPath) as? СinemaVote
+            else { fatalError() }
+            cell.configure(vote: tvSerialDetail.voteAverage, voteCount: tvSerialDetail.voteCount)
+            return cell
+        case 3:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CastsCell.identifier, for: indexPath) as? CastsCell
+            else { fatalError() }
+            cell.casts = tvSerialCredits.cast
+            return cell
+        case 4:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CrewsCell.identifier, for: indexPath) as? CrewsCell
+            else { fatalError() }
+            cell.crews = tvSerialCredits.crew
+            return cell
+        default:
+            fatalError()
+        }
     }
 }
 

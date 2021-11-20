@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class MovieInfo: UITableViewCell {
-    static let identifier = "MovieInfo"
+final class СinemaInfo: UITableViewCell {
+    static let identifier = "СinemaInfo"
     
     private let titleLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 24, weight: .black))
@@ -69,10 +69,7 @@ final class MovieInfo: UITableViewCell {
         ])
     }
     
-    func configure(title: String, voteAverage: Double, releaseDate: String, genres: [Genre]) {
-        titleLabel.text = title
-        voteLabel.text = "\(voteAverage) TMDB"
-        
+    private func dateToString(releaseDate: String) -> String {
         var releaseDateString = "дата релиза не известна"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-dd-mm"
@@ -83,8 +80,15 @@ final class MovieInfo: UITableViewCell {
             releaseDateString = dateFormatter.string(from: releaseDate)
         }
         
+        return releaseDateString
+    }
+    
+    func configure(title: String, voteAverage: Double, releaseDate: String, genres: [Genre]) {
+        let releaseDateString = dateToString(releaseDate: releaseDate)
         let genresString = genres.map { $0.name }.joined(separator: ", ")
         
+        titleLabel.text = title
+        voteLabel.text = "\(voteAverage) TMDB"
         yearGenresLabel.text = "\(releaseDateString), \(genresString)"
     }
 }

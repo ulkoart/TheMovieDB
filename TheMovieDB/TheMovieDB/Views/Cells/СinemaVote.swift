@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class VoteBlock: UITableViewCell {
+final class СinemaVote: UITableViewCell {
     static let identifier = "Vote"
     
     private let voteTitileLabel: UILabel = {

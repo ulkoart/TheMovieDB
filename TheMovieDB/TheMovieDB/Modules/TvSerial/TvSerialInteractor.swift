@@ -40,7 +40,7 @@ final class TvSerialInteractor: TvSerialInteractorProtocol {
     }
     
     private func processGetTvSerialDetail(_ response: GetTvSerialDetailResponse) {
-        dispatchGroup.leave()
+        defer { dispatchGroup.leave() }
         switch response {
         case .success(let data):
             tvSerialDetail = data
@@ -50,7 +50,7 @@ final class TvSerialInteractor: TvSerialInteractorProtocol {
     }
     
     private func processGetTvSerialCredits(_ response: GetTvSerialCreditsResponse) {
-        dispatchGroup.leave()
+        defer { dispatchGroup.leave() }
         switch response {
         case .success(let data):
             tvSerialCredits = data

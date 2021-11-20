@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class MovieOverview: UITableViewCell {
-    static let identifier = "MovieDetail"
+final class СinemaOverview: UITableViewCell {
+    static let identifier = "СinemaOverview"
     
     private let overviewLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 16, weight: .regular))

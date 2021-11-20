@@ -29,9 +29,9 @@ final class MovieViewController: IndicationViewController {
         $0.showsVerticalScrollIndicator = false
         $0.separatorStyle = .none
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(MovieInfo.self, forCellReuseIdentifier: MovieInfo.identifier)
-        $0.register(MovieOverview.self, forCellReuseIdentifier: MovieOverview.identifier)
-        $0.register(VoteBlock.self, forCellReuseIdentifier: VoteBlock.identifier)
+        $0.register(СinemaInfo.self, forCellReuseIdentifier: СinemaInfo.identifier)
+        $0.register(СinemaOverview.self, forCellReuseIdentifier: СinemaOverview.identifier)
+        $0.register(СinemaVote.self, forCellReuseIdentifier: СinemaVote.identifier)
         $0.register(CastsCell.self, forCellReuseIdentifier: CastsCell.identifier)
         $0.register(CrewsCell.self, forCellReuseIdentifier: CrewsCell.identifier)
         return $0
@@ -159,7 +159,7 @@ extension MovieViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieInfo.identifier, for: indexPath) as? MovieInfo
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaInfo.identifier, for: indexPath) as? СinemaInfo
             else { fatalError() }
             cell.configure(
                 title: movieDetail.title,
@@ -169,12 +169,12 @@ extension MovieViewController: UITableViewDataSource {
             )
             return cell
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieOverview.identifier, for: indexPath) as? MovieOverview
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaOverview.identifier, for: indexPath) as? СinemaOverview
             else { fatalError() }
             cell.configure(overview: movieDetail.overview)
             return cell
         case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: VoteBlock.identifier, for: indexPath) as? VoteBlock
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: СinemaVote.identifier, for: indexPath) as? СinemaVote
             else { fatalError() }
             cell.configure(vote: movieDetail.voteAverage, voteCount: movieDetail.voteCount)
             return cell

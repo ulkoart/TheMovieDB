@@ -39,7 +39,7 @@ final class MovieInteractor: MovieInteractorProtocol {
     }
     
     private func processGetMovieDetail(_ response: GetMovieDetailResponse) {
-        dispatchGroup.leave()
+        defer { dispatchGroup.leave() }
         switch response {
         case .success(let data):
             movieDetail = data
@@ -49,7 +49,7 @@ final class MovieInteractor: MovieInteractorProtocol {
     }
     
     private func processGetMovieCredits(_ response: GetMovieCreditsResponse) {
-        dispatchGroup.leave()
+        defer { dispatchGroup.leave() }
         switch response {
         case .success(let data):
             movieCredits = data
