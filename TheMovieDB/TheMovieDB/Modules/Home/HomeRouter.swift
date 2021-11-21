@@ -8,13 +8,13 @@
 import UIKit
 
 protocol HomeRouterProtocol: AnyObject {
-    static func createModule() -> UIViewController
+    static func createModule() -> HomeViewController
     func presentMovieScreen(from view: HomeViewControllerProtocol, for movieId: Int)
     func presentTvSerial(from view: HomeViewControllerProtocol, for tvSerialId: Int)
 }
 
 final class HomeRouter: HomeRouterProtocol {
-    static func createModule() -> UIViewController {
+    static func createModule() -> HomeViewController {
         let viewController = HomeViewController()
         let presenter = HomePresenter()
         let interactor = HomeInteractor()
