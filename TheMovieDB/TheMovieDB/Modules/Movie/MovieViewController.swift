@@ -13,6 +13,7 @@ protocol MovieViewControllerProtocol: AnyObject {
     func configureData(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse)
     func reloadData()
     func dataFailure(text: String)
+    func switchFavouritesIcon()
 }
 
 final class MovieViewController: IndicationViewController {
@@ -74,14 +75,24 @@ final class MovieViewController: IndicationViewController {
         ])
         
         configureNavigationBarStyle(tintColor: .white, backgroundImage: UIImage())
-        configureNavigationBaritems()
+        configureNavigationBarItems()
     }
     
-    private func configureNavigationBaritems() {
+    private func configureNavigationBarItems() {
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        let rightButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareMovie))
-        navigationItem.rightBarButtonItem = rightButton
+        let shareButton = UIBarButtonItem(image: UIImage(named: "share"), style: .plain, target: self, action: #selector(shareMovie))
+        
+        var addFavButtonImageSystemName = "heart"
+        if presenter?.movieIsFavorite(id: movieId) == true {
+            addFavButtonImageSystemName += ".fill"
+        }
+        
+        let addFavButton = UIBarButtonItem(
+            image: UIImage(systemName: addFavButtonImageSystemName), style: .plain,
+            target: self, action: #selector(favouriteTapped))
+        
+        navigationItem.rightBarButtonItems = [shareButton, addFavButton]
     }
     
     private func configureNavigationBarStyle(tintColor: UIColor, backgroundImage: UIImage?) {
@@ -95,7 +106,12 @@ final class MovieViewController: IndicationViewController {
     }
     
     @objc private func shareMovie() {
-        self.showAlert(title: "share", message: "Movie", completion: nil)
+        print(#function)
+    }
+    
+    @objc private func favouriteTapped() {
+        guard let movieDetail = movieDetail else { return }
+        presenter?.changeFavoriteStatus(with: movieDetail)
     }
 }
 
@@ -105,6 +121,16 @@ extension MovieViewController: MovieViewControllerProtocol {
             self.showAlert(title: "Ой-Ой", message: text) {
                 self.navigationController?.popViewController(animated: true)
             }
+        }
+    }
+    
+    func switchFavouritesIcon() {
+        guard let addFavButton = navigationItem.rightBarButtonItems?[1] else { return }
+        
+        if presenter?.movieIsFavorite(id: movieId) == true {
+            addFavButton.image = UIImage(systemName: "heart.fill")
+        } else {
+            addFavButton.image = UIImage(systemName: "heart")
         }
     }
     

@@ -10,26 +10,43 @@ import Foundation
 protocol MovieInteractorProtocol: AnyObject {
     var presenter: MoviePresenterProtocol? { get set }
     func retrieveData(movieId: Int)
+    func changeFavorite(movieDetail: MovieDetailResponse)
+    func movieIsFavorite(id: Int) -> Bool
 }
 
 final class MovieInteractor: MovieInteractorProtocol {
     weak var presenter: MoviePresenterProtocol?
     
-    private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
+    private let networkService: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
+    private let persistentService: PersistentService = PersistentService.shared
+    
     private let dispatchGroup = DispatchGroup()
     private var movieDetail: MovieDetailResponse?
     private var movieCredits: MovieCreditsResponse?
-        
+    
     func retrieveData(movieId: Int) {
         retrieveMovieData(movieId: movieId)
     }
-         
+    
+    func changeFavorite(movieDetail: MovieDetailResponse) {
+        if movieIsFavorite(id: movieDetail.id) {
+            persistentService.removeFromFavorites(id: movieDetail.id)
+        } else {
+            persistentService.addToFavorite(id: movieDetail.id, title: movieDetail.title)
+        }
+        presenter?.updateFavouritesDone()
+    }
+    
+    func movieIsFavorite(id: Int) -> Bool {
+        return persistentService.isFavorite(id: id)
+    }
+    
     private func retrieveMovieData(movieId: Int) {
         dispatchGroup.enter()
-        service.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
+        networkService.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
         
         dispatchGroup.enter()
-        service.getMovieCredits(movieId: movieId) { self.processGetMovieCredits($0) }
+        networkService.getMovieCredits(movieId: movieId) { self.processGetMovieCredits($0) }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let movieDetail = self?.movieDetail else { return }
