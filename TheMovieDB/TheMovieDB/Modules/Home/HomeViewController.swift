@@ -114,12 +114,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
+        // тренды
         case 0:
             return 280
+        // сейчас в кино
         case 1:
             return 200
+        // популярные сериалы
         case 2:
-            return 140
+            return 180
         default:
             fatalError()
         }

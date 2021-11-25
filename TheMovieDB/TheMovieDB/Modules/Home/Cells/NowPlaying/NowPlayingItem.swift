@@ -28,7 +28,7 @@ final class NowPlayingItem: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = TrendItem.cornerRadius
+        layer.cornerRadius = NowPlayingItem.cornerRadius
         
         addSubview(imageView)
         NSLayoutConstraint.activate([

@@ -23,17 +23,32 @@ final class TvPopularItem: UICollectionViewCell {
         return $0
     }(UIImageView())
     
+    private let titleLabel: UILabel = {
+        $0.font = .init(.systemFont(ofSize: 12, weight: .bold))
+        $0.textColor = .init(white: 0.6, alpha: 1)
+        $0.numberOfLines = 2
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.textAlignment = .left
+        return $0
+    }(UILabel())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        layer.cornerRadius = TrendItem.cornerRadius
         
         addSubview(imageView)
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imageView.heightAnchor.constraint(equalTo: heightAnchor)
+            imageView.heightAnchor.constraint(equalToConstant: 110)
+        ])
+        
+        contentView.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     
@@ -47,6 +62,9 @@ final class TvPopularItem: UICollectionViewCell {
     }
     
     func configure(with tvPopular: TvPopular) {
+        
+        titleLabel.text = tvPopular.name
+        
         if let backdropPath = tvPopular.backdropPath {
             let imageUrlString = "https://image.tmdb.org/t/p/w500\(backdropPath)"
             imageNetworkService.getImageFrom(imageUrlString) { [weak self] image in

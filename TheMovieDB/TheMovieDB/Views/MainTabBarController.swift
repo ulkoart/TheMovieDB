@@ -12,8 +12,9 @@ class MainTabBarController: UITabBarController {
         super.viewDidLoad()
         
         viewControllers = [
-            createController(viewController: HomeRouter.createModule(), title: "Киношечка 🎬", imageName: "home"),
-            createController(viewController: SearchRouter.createModule(), title: "Поиск 🔎", imageName: "search")
+            createController(viewController: HomeRouter.createModule(), title: "Киношечка 🎬", imageName: "house"),
+            createController(viewController: SearchRouter.createModule(), title: "Поиск 🔎", imageName: "magnifyingglass"),
+            createController(viewController: FavoritesRouter.createModule(), title: "Избранное ❤️", imageName: FavoritesRouter.tabBarItemImageName)
         ]
     }
     
@@ -22,7 +23,7 @@ class MainTabBarController: UITabBarController {
         navigationController.navigationBar.prefersLargeTitles = true
         viewController.navigationItem.title = title
         navigationController.tabBarItem.title = nil
-        navigationController.tabBarItem.image = UIImage(named: "\(imageName)")
+        navigationController.tabBarItem.image = UIImage(systemName: imageName)
         return navigationController
     }
 }
