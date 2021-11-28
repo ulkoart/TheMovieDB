@@ -111,7 +111,8 @@ final class MovieViewController: IndicationViewController {
     
     @objc private func favouriteTapped() {
         guard let movieDetail = movieDetail else { return }
-        presenter?.changeFavoriteStatus(with: movieDetail)
+        guard let headerView = self.tableView.tableHeaderView as? StretchyTableHeader else { return }
+        presenter?.changeFavoriteStatus(movieDetail: movieDetail, movieImageData: headerView.imageView.image?.pngData())
     }
 }
 

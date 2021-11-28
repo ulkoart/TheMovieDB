@@ -11,7 +11,7 @@ import CoreData
 final class PersistentService {
     static let shared = PersistentService()
     private init() {}
-
+    
     lazy var coreDataStack = CoreDataStack(modelName: "TheMovieDB")
     
     func isFavorite(id: Int) -> Bool {
@@ -35,19 +35,36 @@ final class PersistentService {
         let results = try? context.fetch(fetchRequest)
         guard let favorite = results?.first else { return}
         context.delete(favorite)
-        try? context.save()
-        return
+        saveContext()
     }
     
-    func addToFavorite(id: Int, title: String) {
-        if isFavorite(id: id) {
-            return
-        } else {
-            let context = coreDataStack.viewContext
-            let favorite = Favorite(context: context)
-            favorite.id = Int64(id)
-            favorite.title = title
-            try? context.save()
+    func addToFavorite(id: Int, title: String, movieImageData: Data) {
+        let context = coreDataStack.viewContext
+        let favorite = Favorite(context: context)
+        favorite.id = Int64(id)
+        favorite.title = title
+        favorite.image = movieImageData
+        saveContext()
+    }
+    
+    func resetFavorites(complition: () -> Void) {
+        let context = coreDataStack.viewContext
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: Favorite.fetchRequest())
+        deleteRequest.resultType = .resultTypeCount
+        _ = try? context.execute(deleteRequest)
+        context.reset()
+        complition()
+    }
+    
+    private func saveContext () {
+        let context = coreDataStack.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
         }
     }
 }

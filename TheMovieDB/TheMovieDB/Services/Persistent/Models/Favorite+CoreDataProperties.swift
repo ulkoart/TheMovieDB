@@ -2,7 +2,7 @@
 //  Favorite+CoreDataProperties.swift
 //  TheMovieDB
 //
-//  Created by user on 23.11.2021.
+//  Created by user on 26.11.2021.
 //
 //
 
@@ -17,6 +17,7 @@ extension Favorite {
 
     @NSManaged public var id: Int64
     @NSManaged public var title: String?
+    @NSManaged public var image: Data?
 
 }
 

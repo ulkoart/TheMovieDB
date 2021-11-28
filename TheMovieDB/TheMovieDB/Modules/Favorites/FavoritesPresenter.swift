@@ -12,6 +12,8 @@ protocol FavoritesPresenterProtocol: AnyObject {
     var interactor: FavoritesInteractorProtocol? { get set }
     
     func deleteFavorite(id: Int)
+    func deleteAllFavorite()
+    func deleteAllFavoriteSuccess()
 }
 
 class FavoritesPresenter: FavoritesPresenterProtocol {
@@ -20,6 +22,14 @@ class FavoritesPresenter: FavoritesPresenterProtocol {
     
     func deleteFavorite(id: Int) {
         interactor?.revomeFromFavorites(id: id)
+    }
+    
+    func deleteAllFavorite() {
+        interactor?.revomeAllFavorites()
+    }
+    
+    func deleteAllFavoriteSuccess() {
+        viewController?.reloadData()
     }
     
 }

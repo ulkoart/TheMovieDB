@@ -19,11 +19,11 @@ final class CoreDataStack {
         self.container = NSPersistentContainer(name: modelName)
         backgroundContext = self.container.newBackgroundContext()
         
-        viewContext.automaticallyMergesChangesFromParent = true
-        backgroundContext.automaticallyMergesChangesFromParent = true
-        
-        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+//         viewContext.automaticallyMergesChangesFromParent = true
+//         backgroundContext.automaticallyMergesChangesFromParent = true
+//
+//         backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+//         viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
     }
     
     func load() {

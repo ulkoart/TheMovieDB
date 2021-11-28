@@ -15,7 +15,7 @@ protocol MoviePresenterProtocol: AnyObject {
     func loadData(movieId: Int)
     func loadDataSuccess(movieDetail: MovieDetailResponse, movieCredits: MovieCreditsResponse)
     func loadDataFailure(errorString: String)
-    func changeFavoriteStatus(with movieDetail: MovieDetailResponse)
+    func changeFavoriteStatus(movieDetail: MovieDetailResponse, movieImageData: Data?)
     func movieIsFavorite(id: Int) -> Bool
     func updateFavouritesDone()
 }
@@ -44,8 +44,8 @@ final class MoviePresenter: MoviePresenterProtocol {
         self.viewController?.dataFailure(text: errorString)
     }
     
-    func changeFavoriteStatus(with movieDetail: MovieDetailResponse) {
-        interactor?.changeFavorite(movieDetail: movieDetail)
+    func changeFavoriteStatus(movieDetail: MovieDetailResponse, movieImageData: Data?) {
+        interactor?.changeFavorite(movieDetail: movieDetail, movieImageData: movieImageData)
     }
     
     func movieIsFavorite(id: Int) -> Bool {

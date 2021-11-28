@@ -10,7 +10,7 @@ import Foundation
 protocol MovieInteractorProtocol: AnyObject {
     var presenter: MoviePresenterProtocol? { get set }
     func retrieveData(movieId: Int)
-    func changeFavorite(movieDetail: MovieDetailResponse)
+    func changeFavorite(movieDetail: MovieDetailResponse, movieImageData: Data?)
     func movieIsFavorite(id: Int) -> Bool
 }
 
@@ -28,11 +28,12 @@ final class MovieInteractor: MovieInteractorProtocol {
         retrieveMovieData(movieId: movieId)
     }
     
-    func changeFavorite(movieDetail: MovieDetailResponse) {
+    func changeFavorite(movieDetail: MovieDetailResponse, movieImageData: Data?) {
         if movieIsFavorite(id: movieDetail.id) {
             persistentService.removeFromFavorites(id: movieDetail.id)
         } else {
-            persistentService.addToFavorite(id: movieDetail.id, title: movieDetail.title)
+            guard let movieImageData = movieImageData else { return }
+            persistentService.addToFavorite(id: movieDetail.id, title: movieDetail.title, movieImageData: movieImageData)
         }
         presenter?.updateFavouritesDone()
     }

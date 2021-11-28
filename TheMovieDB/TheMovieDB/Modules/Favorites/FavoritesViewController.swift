@@ -10,6 +10,8 @@ import CoreData
 
 protocol FavoritesViewControllerProtocol: AnyObject {
     var presenter: FavoritesPresenterProtocol? { get set }
+    
+    func reloadData()
 }
 
 final class FavoritesViewController: UIViewController {
@@ -22,7 +24,9 @@ final class FavoritesViewController: UIViewController {
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        $0.rowHeight = UITableView.automaticDimension
+        $0.estimatedRowHeight = UITableView.automaticDimension
+        $0.register(FavoritesCell.self, forCellReuseIdentifier: FavoritesCell.identifier)
         return $0
     }(UITableView())
     
@@ -58,11 +62,32 @@ final class FavoritesViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        let addFavButton = UIBarButtonItem(
+            image: UIImage(systemName: "trash.circle"), style: .plain,
+            target: self, action: #selector(deleteAllFav))
+        
+        navigationItem.rightBarButtonItem = addFavButton
+        
+    }
+    
+    @objc private func deleteAllFav() {
+        let alert = UIAlertController(title: "Вы уверены?", message: "вы уверены, что хотите очитсть избранное?", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            self?.presenter?.deleteAllFavorite()
+        }
+        let cancelAction =  UIAlertAction(title: "Отмена", style: .default)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
 extension FavoritesViewController: FavoritesViewControllerProtocol {
-    
+    func reloadData() {
+        try? fetchedResultsController?.performFetch()
+        tableView.reloadData()
+    }
 }
 
 extension FavoritesViewController: NSFetchedResultsControllerDelegate {
@@ -75,6 +100,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+
         switch type {
         case .insert:
             tableView.insertRows(at: [newIndexPath!], with: .fade)
@@ -97,9 +123,11 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesCell.identifier, for: indexPath) as? FavoritesCell else {
+            fatalError()
+        }
         guard let favorite = fetchedResultsController?.object(at: indexPath) else { fatalError() }
-        cell.textLabel?.text = favorite.title
+        cell.configure(with: favorite)
         return cell
     }
     
