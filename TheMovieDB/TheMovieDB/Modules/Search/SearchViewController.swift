@@ -8,6 +8,8 @@
 import UIKit
 
 protocol SearchViewControllerProtocol: AnyObject {
+    var placeholderLabel: UILabel { get }
+    
     var presenter: SearchPresenterProtocol? { get set }
     var searchResults: [SearchMovie] { get set }
 }
@@ -19,13 +21,16 @@ final class SearchViewController: UIViewController {
     var presenter: SearchPresenterProtocol?
     var searchResults = [SearchMovie]() {
         didSet {
-            tableView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
         }
     }
     
-    private let placeholderLabel: UILabel = {
+    let placeholderLabel: UILabel = {
         $0.font = .init(.systemFont(ofSize: 14, weight: .bold))
         $0.textAlignment = .center
+        $0.numberOfLines = 0
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "Пожалуйста, введите поисковый запрос..."
         return $0
@@ -36,7 +41,7 @@ final class SearchViewController: UIViewController {
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        $0.register(SearchCell.self, forCellReuseIdentifier: SearchCell.identifier)
         return $0
     }(UITableView())
     
@@ -73,8 +78,8 @@ final class SearchViewController: UIViewController {
         view.addSubview(placeholderLabel)
         NSLayoutConstraint.activate([
             placeholderLabel.topAnchor.constraint(equalTo: view.topAnchor),
-            placeholderLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            placeholderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            placeholderLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 8),
+            placeholderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -8),
             placeholderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
@@ -87,23 +92,26 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.identifier, for: indexPath) as? SearchCell else {
+            return UITableViewCell()
+        }
         let searchMovie = searchResults[indexPath.row]
-        cell.textLabel?.text = "\(searchMovie.title) \(searchMovie.releaseDate)"
+        cell.configure(with: searchMovie)
         return cell
     }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else { searchResults = []; return }
+        if searchText.isEmpty {
+            placeholderLabel.text = "Пожалуйста, введите поисковый запрос..."
+        }
+
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { [weak self] _ in
             self?.presenter?.searchMovie(name: searchText)
         })
     }
 }
 
-extension SearchViewController: SearchViewControllerProtocol {
-
-}
+extension SearchViewController: SearchViewControllerProtocol {}

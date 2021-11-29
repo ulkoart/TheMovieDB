@@ -12,7 +12,8 @@ protocol SearchPresenterProtocol: AnyObject {
     var interactor: SearchInteractorProtocol? { get set }
     
     func searchMovie(name query: String)
-    func searchMovieSuccess(movies: [SearchMovie]) 
+    func searchMovieSuccess(movies: [SearchMovie])
+    func searchMovieFailure()
 }
 
 class SearchPresenter: SearchPresenterProtocol {
@@ -26,6 +27,13 @@ class SearchPresenter: SearchPresenterProtocol {
     func searchMovieSuccess(movies: [SearchMovie]) {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.searchResults = movies
+        }
+    }
+    
+    func searchMovieFailure() {
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.searchResults = []
+            self?.viewController?.placeholderLabel.text = "к сожалению по вашему запросу ничего не найдено :-("
         }
     }
 }

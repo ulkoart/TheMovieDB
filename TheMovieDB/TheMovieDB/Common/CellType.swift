@@ -11,5 +11,4 @@ enum CellType {
     case trend
     case nowPlaying
     case tvPopular
-    
 }

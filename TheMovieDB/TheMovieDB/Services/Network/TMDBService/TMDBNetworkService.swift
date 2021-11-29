@@ -108,8 +108,6 @@ final class TMDBNetworkService {
     
     private func GETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
         
-        print(url)
-        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let handler: URLSessionHandler = { data, response, _ in
@@ -131,7 +129,8 @@ final class TMDBNetworkService {
             }
         }
         let task = session.dataTask(with: url, completionHandler: handler)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) { task.resume() }
+        task.resume()
+        // DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 ) { task.resume() }
     }
 }
 
@@ -167,8 +166,11 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     
     func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void) {
         guard let url = Endpoints.searchMovie(query).url else { return }
-        GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, _ in
-            guard let searchMovieResponse = searchMovieResponse else { fatalError() }
+        GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, error in
+            guard let searchMovieResponse = searchMovieResponse else {
+                completion(.failure(error as? NetworkServiceError ?? .unknown))
+                return
+            }
             completion(.success(searchMovieResponse))
         }
     }
@@ -216,9 +218,9 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
     
     func getTvSerialCredits(tvSerialId: Int, completion: @escaping (GetTvSerialCreditsResponse) -> Void) {
         guard let url = Endpoints.getTvSerialCredits(tvSerialId).url else { return }
-        GETRequest(url: url, responseType: TvSerialCreditsResponse.self.self) { getMovieCreditsResponse, _ in
+        GETRequest(url: url, responseType: TvSerialCreditsResponse.self.self) { getMovieCreditsResponse, error in
             guard let getMovieCreditsResponse = getMovieCreditsResponse else {
-                completion(.failure(.unknown))
+                completion(.failure(error as? NetworkServiceError ?? .unknown))
                 return
             }
             completion(.success(getMovieCreditsResponse))

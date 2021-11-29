@@ -18,6 +18,7 @@ enum Department: String, Codable {
     case art = "Art"
     case camera = "Camera"
     case costumeMakeUp = "Costume & Make-Up"
+    case creator = "Creator"
     case crew = "Crew"
     case directing = "Directing"
     case editing = "Editing"

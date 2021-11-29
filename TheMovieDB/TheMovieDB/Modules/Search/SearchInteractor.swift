@@ -24,7 +24,8 @@ final class SearchInteractor: SearchInteractorProtocol {
             case .success(let data):
                 self?.presenter?.searchMovieSuccess(movies: data.results)
             case .failure(let error):
-                print(error)
+                _ = error // что бы линтрер успокоился
+                self?.presenter?.searchMovieFailure()
             }
         }
     }
