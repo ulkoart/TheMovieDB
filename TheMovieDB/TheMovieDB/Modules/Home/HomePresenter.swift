@@ -46,9 +46,8 @@ final class HomePresenter: HomePresenterProtocol {
     }
     /// Загрузка данных прошла успешно
     func loadDataSuccess(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular]) {
-        viewController?.trends = trends
-        viewController?.nowPlaying = nowPlaying
-        viewController?.tvPopular = tvPopular
+        viewController?.loadDataDone(trends: trends, nowPlaying: nowPlaying, tvPopular: tvPopular)
+        
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.reloadRows()
             self?.viewController?.hideLoadView()
@@ -71,7 +70,7 @@ final class HomePresenter: HomePresenterProtocol {
     }
     
     func loadMoreNowPlayingSuccess(nowPlaying: [NowPlayingMovie]) {
-        viewController?.nowPlaying.append(contentsOf: nowPlaying)
+        viewController?.tableAdapter.nowPlaying.append(contentsOf: nowPlaying)
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.reloadNowPlaying()
         }
@@ -82,7 +81,7 @@ final class HomePresenter: HomePresenterProtocol {
     }
     
     func loadMoreTrendsSuccess(trends: [Trend]) {
-        viewController?.trends.append(contentsOf: trends)
+        viewController?.tableAdapter.trends.append(contentsOf: trends)
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.reloadTrends()
         }
@@ -99,7 +98,7 @@ final class HomePresenter: HomePresenterProtocol {
     }
     
     func loadMoreTvPopularSuccess(tvPopular: [TvPopular]) {
-        viewController?.tvPopular.append(contentsOf: tvPopular)
+        viewController?.tableAdapter.tvPopular.append(contentsOf: tvPopular)
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.reloadTvPopular()
         }

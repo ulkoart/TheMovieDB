@@ -57,7 +57,7 @@ class FavoritesCell: UITableViewCell {
     func configure(with favorite: Favorite) {
         guard
             let imageData = favorite.image,
-            let image: UIImage = .init(data: imageData) else { return }
+            let image: UIImage = UIImage(data: imageData) else { return }
         favoritesImageView.image = image
         titleLabel.text = favorite.title
     }

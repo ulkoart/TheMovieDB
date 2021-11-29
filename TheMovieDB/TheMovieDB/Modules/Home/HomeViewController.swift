@@ -9,10 +9,9 @@ import UIKit
 
 protocol HomeViewControllerProtocol: AnyObject {
     var presenter: HomePresenterProtocol? { get set }
-    var trends: [Trend] { get set }
-    var nowPlaying: [NowPlayingMovie] { get set }
-    var tvPopular: [TvPopular] { get set }
+    var tableAdapter: HomeTableAdapter { get set }
     
+    func loadDataDone(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular])
     func reloadRows()
     func reloadNowPlaying()
     func reloadTrends()
@@ -22,10 +21,7 @@ protocol HomeViewControllerProtocol: AnyObject {
 final class HomeViewController: IndicationViewController {
     
     var presenter: HomePresenterProtocol?
-    
-    var trends: [Trend] = .init()
-    var nowPlaying: [NowPlayingMovie] = .init()
-    var tvPopular: [TvPopular] = .init()
+    var tableAdapter = HomeTableAdapter()
     
     private let tableView: UITableView = {
         $0.allowsSelection = false
@@ -47,7 +43,6 @@ final class HomeViewController: IndicationViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         resetNavigationBar()
-        
     }
     
     private func resetNavigationBar() {
@@ -60,8 +55,11 @@ final class HomeViewController: IndicationViewController {
     private func configure() {
         view.backgroundColor = .white
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        tableView.delegate = tableAdapter
+        tableView.dataSource = tableAdapter
+        
+        tableAdapter.cellItemTappedDelegate = self
+        tableAdapter.cellLoadMoreDelegate = self
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -73,63 +71,12 @@ final class HomeViewController: IndicationViewController {
     }
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        switch indexPath.row {
-        case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendsCell.identifier, for: indexPath) as? TrendsCell else { fatalError() }
-            cell.trends = self.trends
-            cell.delegate = self
-            cell.loadMoreDelegate = self
-            return cell
-        case 1:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: NowPlayingCell.identifier, for: indexPath
-            ) as? NowPlayingCell else { fatalError() }
-            cell.nowPlaying = self.nowPlaying
-            cell.delegate = self
-            cell.loadMoreDelegate = self
-            return cell
-        case 2:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TvPopularCell.identifier, for: indexPath
-            ) as? TvPopularCell else { fatalError() }
-            cell.delegate = self
-            cell.loadMoreDelegate = self
-            cell.tvPopulars = self.tvPopular
-            return cell
-        default:
-            fatalError()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.row {
-        // тренды
-        case 0:
-            return 280
-        // сейчас в кино
-        case 1:
-            return 200
-        // популярные сериалы
-        case 2:
-            return 180
-        default:
-            fatalError()
-        }
-    }
-}
-
 extension HomeViewController: HomeViewControllerProtocol {
+    func loadDataDone(trends: [Trend], nowPlaying: [NowPlayingMovie], tvPopular: [TvPopular]) {
+        tableAdapter.trends = trends
+        tableAdapter.nowPlaying = nowPlaying
+        tableAdapter.tvPopular = tvPopular
+    }
     
     func reloadRows() {
         let trendsIndexPath = IndexPath(row: 0, section: 0)
@@ -144,59 +91,55 @@ extension HomeViewController: HomeViewControllerProtocol {
     func reloadTrends() {
         let trendsIndexPath = IndexPath(row: 0, section: 0)
         guard let trendsCell = tableView.cellForRow(at: trendsIndexPath) as? TrendsCell else { return }
-        trendsCell.trends = self.trends
+        trendsCell.trends = tableAdapter.trends
     }
     
     func reloadNowPlaying() {
         let nowPlayingIndexPath = IndexPath(row: 1, section: 0)
         guard let nowPlayingCell = tableView.cellForRow(at: nowPlayingIndexPath) as? NowPlayingCell else { return }
-        nowPlayingCell.nowPlaying = self.nowPlaying
+        nowPlayingCell.nowPlaying = tableAdapter.nowPlaying
     }
     
     func reloadTvPopular() {
         let tvPopularIndexPath = IndexPath(row: 2, section: 0)
         guard let tvPopularCell = tableView.cellForRow(at: tvPopularIndexPath) as? TvPopularCell else { return }
-        tvPopularCell.tvPopulars = self.tvPopular
+        tvPopularCell.tvPopulars = tableAdapter.tvPopular
     }
 }
 
-extension HomeViewController: TrendsCellDidSelectItemAtDelegate {
-    func trendDidSelect(with trend: Trend) {
-        switch trend.mediaType {
-        case .movie:
-            presenter?.showMovie(movieId: trend.id)
-        case .tvSerial:
-            presenter?.showTvSerial(tvSerialId: trend.id)
+/// Обработка тапов по ячейкам каруселей
+extension HomeViewController: CellItemTappedDelegate {
+    func cellItemTapped(item: Int, type: MediaType, cellType: CellType) {
+        switch cellType {
+        case .trend:
+            let trend = tableAdapter.trends[item]
+            switch type {
+            case .movie:
+                presenter?.showMovie(movieId: trend.id)
+            case .tvSerial:
+                presenter?.showTvSerial(tvSerialId: trend.id)
+            }
+            
+        case .nowPlaying:
+            let movie = tableAdapter.nowPlaying[item]
+            presenter?.showMovie(movieId: movie.id)
+        case .tvPopular:
+            let tvSerial = tableAdapter.tvPopular[item]
+            presenter?.showTvSerial(tvSerialId: tvSerial.id)
         }
     }
 }
 
-extension HomeViewController: NowPlayingCellLoadMoreDelegate {
-    func loadMoreNowPlaying() {
-        presenter?.loadMoreNowPlaying()
-    }
-}
-
-extension HomeViewController: TrendsCellLoadMoreDelegate {
-    func loadMoreTrends() {
-        presenter?.loadMoreTrends()
-    }
-}
-
-extension HomeViewController: NowPlayingCellDidSelectItemAtDelegate {
-    func nowPlayingDidSelect(with nowPlayingMovie: NowPlayingMovie) {
-        presenter?.showMovie(movieId: nowPlayingMovie.id)
-    }
-}
-
-extension HomeViewController: TvPopularCellDidSelectItemAtDelegate {
-    func tvPopularCellDidSelect(with tvPopular: TvPopular) {
-        presenter?.showTvSerial(tvSerialId: tvPopular.id)
-    }
-}
-
-extension HomeViewController: TvPopularLoadMoreDelegate {
-    func loadMoreTvPopular() {
-        presenter?.loadMoreTvPopular()
+extension HomeViewController: CellLoadMoreDelegate {
+    func loadMore(cellType: CellType) {
+        switch cellType {
+        case .trend:
+            presenter?.loadMoreTrends()
+        case .nowPlaying:
+            presenter?.loadMoreNowPlaying()
+        case .tvPopular:
+            presenter?.loadMoreTvPopular()
+        }
+        
     }
 }

@@ -7,23 +7,15 @@
 
 import UIKit
 
-protocol TrendsCellDidSelectItemAtDelegate: AnyObject {
-    func trendDidSelect(with: Trend)
-}
-
-protocol TrendsCellLoadMoreDelegate: AnyObject {
-    func loadMoreTrends()
-}
-
 final class TrendsCell: UITableViewCell {
     
     static let identifier = "TrendsCell"
     
     /// делегат для подругзки новых страниц
-    weak var loadMoreDelegate: TrendsCellLoadMoreDelegate?
+    weak var loadMoreDelegate: LoadMoreDelegate?
     
     /// делегат обрабатывающий нажатия на ячейку
-    weak var delegate: TrendsCellDidSelectItemAtDelegate?
+    weak var delegate: CellDidSelectItemAtDelegate?
     
     var trends: [Trend] = .init() {
         didSet {
@@ -99,14 +91,14 @@ extension TrendsCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == trends.count - 2 else { return }
-        loadMoreDelegate?.loadMoreTrends()
+        loadMoreDelegate?.loadMore(cellType: .trend)
     }
 }
 
 extension TrendsCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie: Trend = trends[indexPath.item]
-        delegate?.trendDidSelect(with: movie)
+        delegate?.didSelect(item: indexPath.item, mediaType: movie.mediaType, cellType: .trend)
     }
 }
 

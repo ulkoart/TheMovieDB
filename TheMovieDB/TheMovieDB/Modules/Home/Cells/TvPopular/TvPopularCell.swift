@@ -7,23 +7,15 @@
 
 import UIKit
 
-protocol TvPopularCellDidSelectItemAtDelegate: AnyObject {
-    func tvPopularCellDidSelect(with tvPopular: TvPopular)
-}
-
-protocol TvPopularLoadMoreDelegate: AnyObject {
-    func loadMoreTvPopular()
-}
-
 final class TvPopularCell: UITableViewCell {
     
     static let identifier = "TvPopularCell"
     
     /// делегат обрабатывающий нажатия на ячейку
-    weak var delegate: TvPopularCellDidSelectItemAtDelegate?
+    weak var delegate: CellDidSelectItemAtDelegate?
     
     /// делегат для подругзки новых страниц
-    weak var loadMoreDelegate: TvPopularLoadMoreDelegate?
+    weak var loadMoreDelegate: LoadMoreDelegate?
     
     var tvPopulars: [TvPopular] = .init() {
         didSet {
@@ -100,14 +92,13 @@ extension TvPopularCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == tvPopulars.count - 3 else { return }
-        loadMoreDelegate?.loadMoreTvPopular()
+        loadMoreDelegate?.loadMore(cellType: .tvPopular)
     }
 }
 
 extension TvPopularCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tvPopular: TvPopular = tvPopulars[indexPath.item]
-        delegate?.tvPopularCellDidSelect(with: tvPopular)
+        delegate?.didSelect(item: indexPath.item, mediaType: .tvSerial, cellType: .tvPopular)
     }
 }
 

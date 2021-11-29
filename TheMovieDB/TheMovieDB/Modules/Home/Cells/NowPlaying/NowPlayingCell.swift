@@ -7,23 +7,15 @@
 
 import UIKit
 
-protocol NowPlayingCellDidSelectItemAtDelegate: AnyObject {
-    func nowPlayingDidSelect(with nowPlayingMovie: NowPlayingMovie)
-}
-
-protocol NowPlayingCellLoadMoreDelegate: AnyObject {
-    func loadMoreNowPlaying()
-}
-
 final class NowPlayingCell: UITableViewCell {
     
     static let identifier = "NowPlayingCell"
     
     /// делегат обрабатывающий нажатия на ячейку
-    weak var delegate: NowPlayingCellDidSelectItemAtDelegate?
+    weak var delegate: CellDidSelectItemAtDelegate?
     
     /// делегат для подругзки новых страниц
-    weak var loadMoreDelegate: NowPlayingCellLoadMoreDelegate?
+    weak var loadMoreDelegate: LoadMoreDelegate?
     
     var nowPlaying: [NowPlayingMovie] = .init() {
         didSet {
@@ -100,12 +92,11 @@ extension NowPlayingCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.row == nowPlaying.count - 3 else { return }
-        loadMoreDelegate?.loadMoreNowPlaying()
+        loadMoreDelegate?.loadMore(cellType: .nowPlaying)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie: NowPlayingMovie = nowPlaying[indexPath.item]
-        delegate?.nowPlayingDidSelect(with: movie)
+        delegate?.didSelect(item: indexPath.item, mediaType: .movie, cellType: .nowPlaying)
     }
 }
 

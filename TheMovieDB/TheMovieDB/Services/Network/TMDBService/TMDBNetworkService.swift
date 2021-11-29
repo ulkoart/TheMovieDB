@@ -108,6 +108,8 @@ final class TMDBNetworkService {
     
     private func GETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
         
+        print(url)
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let handler: URLSessionHandler = { data, response, _ in
