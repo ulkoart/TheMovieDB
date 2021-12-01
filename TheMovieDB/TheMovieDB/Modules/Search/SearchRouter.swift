@@ -10,6 +10,7 @@ import UIKit
 protocol SearchRouterProtocol: AnyObject {
     static func createModule() -> UIViewController
     func presentSettingsScreen(from view: UIViewController)
+    func presentMovieScreen(from view: UIViewController, for movieId: Int)
 }
 
 final class SearchRouter: SearchRouterProtocol {
@@ -32,5 +33,10 @@ final class SearchRouter: SearchRouterProtocol {
     func presentSettingsScreen(from view: UIViewController) {
         let searchSettingsViewController = SearchSettingsRouter.createModule()
         view.present(searchSettingsViewController, animated: true, completion: nil)
+    }
+    
+    func presentMovieScreen(from view: UIViewController, for movieId: Int) {
+        let movieViewController = MovieRouter.createModule(with: movieId)
+        view.navigationController?.pushViewController(movieViewController, animated: true)
     }
 }

@@ -37,7 +37,6 @@ final class SearchViewController: UIViewController {
     }(UILabel())
     
     private let tableView: UITableView = {
-        $0.allowsSelection = false
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -48,6 +47,16 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
+        navigationController.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController.navigationBar.shadowImage = nil
+        navigationController.navigationBar.tintColor = .systemBlue
+        navigationController.statusBarEnterLightBackground()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,6 +115,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.identifier, for: indexPath) as? SearchCell else {
             return UITableViewCell()
         }
+        cell.selectionStyle = .none
         let searchMovie = searchResults[indexPath.row]
         cell.configure(with: searchMovie)
         return cell
@@ -122,6 +132,11 @@ extension SearchViewController: UISearchBarDelegate {
         timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { [weak self] _ in
             self?.presenter?.searchMovie(name: searchText)
         })
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let searchItem = searchResults[indexPath.item]
+        presenter?.presentMovieScreen(from: self, for: searchItem.id)
     }
 }
 

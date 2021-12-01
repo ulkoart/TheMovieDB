@@ -17,6 +17,7 @@ protocol SearchPresenterProtocol: AnyObject {
     func searchMovieSuccess(movies: [SearchMovie])
     func searchMovieFailure()
     
+    func presentMovieScreen(from view: UIViewController, for movieId: Int)
     func presentSettingsScreen(view: UIViewController)
 }
 
@@ -45,5 +46,9 @@ class SearchPresenter: SearchPresenterProtocol {
     func presentSettingsScreen(view: UIViewController) {
         guard let router = router else { return }
         router.presentSettingsScreen(from: view)
+    }
+    
+    func presentMovieScreen(from view: UIViewController, for movieId: Int) {
+        router?.presentMovieScreen(from: view, for: movieId)
     }
 }
