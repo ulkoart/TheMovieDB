@@ -17,6 +17,10 @@
 		CE0C3B91274258D200BD334C /* TvSerialInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B90274258D200BD334C /* TvSerialInteractor.swift */; };
 		CE0C3B9627425D6B00BD334C /* TvSerialDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B9527425D6B00BD334C /* TvSerialDetailResponse.swift */; };
 		CE0C3B9927425E5E00BD334C /* TvSerialCreditsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B9827425E5E00BD334C /* TvSerialCreditsResponse.swift */; };
+		CE2D7B5E2757600D00DD4935 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */; };
+		CE2D7B602757793F00DD4935 /* SearchSettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */; };
+		CE2D7B6227577B7600DD4935 /* SearchSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */; };
+		CE2D7B6427577B9400DD4935 /* SearchSettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */; };
 		CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C127300EB900EC9D36 /* MovieRouter.swift */; };
 		CE36F3C427300F4900EC9D36 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C327300F4900EC9D36 /* MovieViewController.swift */; };
 		CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */; };
@@ -167,6 +171,10 @@
 		CE0C3B90274258D200BD334C /* TvSerialInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialInteractor.swift; sourceTree = "<group>"; };
 		CE0C3B9527425D6B00BD334C /* TvSerialDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialDetailResponse.swift; sourceTree = "<group>"; };
 		CE0C3B9827425E5E00BD334C /* TvSerialCreditsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialCreditsResponse.swift; sourceTree = "<group>"; };
+		CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
+		CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsRouter.swift; sourceTree = "<group>"; };
+		CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsPresenter.swift; sourceTree = "<group>"; };
+		CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsInteractor.swift; sourceTree = "<group>"; };
 		CE36F3C127300EB900EC9D36 /* MovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRouter.swift; sourceTree = "<group>"; };
 		CE36F3C327300F4900EC9D36 /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StretchyTableHeader.swift; sourceTree = "<group>"; };
@@ -285,6 +293,17 @@
 				CE0C3B8A2742567D00BD334C /* TvSerialRouter.swift */,
 			);
 			path = TvSerial;
+			sourceTree = "<group>";
+		};
+		CE2D7B5C27575C7800DD4935 /* SearchSettings */ = {
+			isa = PBXGroup;
+			children = (
+				CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */,
+				CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */,
+				CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */,
+				CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */,
+			);
+			path = SearchSettings;
 			sourceTree = "<group>";
 		};
 		CE36F3C027300E9200EC9D36 /* Movie */ = {
@@ -530,10 +549,11 @@
 			isa = PBXGroup;
 			children = (
 				CED0E52D272AC5A3001DD0F0 /* SearchViewController.swift */,
-				CED0E533272AE707001DD0F0 /* SearchInteractor.swift */,
 				CED0E535272AE79B001DD0F0 /* SearchPresenter.swift */,
+				CED0E533272AE707001DD0F0 /* SearchInteractor.swift */,
 				CED0E52F272AC5B5001DD0F0 /* SearchRouter.swift */,
 				CE9476842754E7D000BF3CA5 /* Cells */,
+				CE2D7B5C27575C7800DD4935 /* SearchSettings */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -718,9 +738,11 @@
 				CE67103527359AB000745683 /* MoviePresenter.swift in Sources */,
 				CE0C3B8E2742589500BD334C /* TvSerialPresenter.swift in Sources */,
 				CE09C14D2754AA7E000C32EC /* HomeTableAdapter.swift in Sources */,
+				CE2D7B5E2757600D00DD4935 /* SearchSettingsViewController.swift in Sources */,
 				CE09C1642754BB10000C32EC /* CellDidSelectItemAtDelegate.swift in Sources */,
 				CED0E4FC27297237001DD0F0 /* ImageLoadService.swift in Sources */,
 				CEB78AD32726D46900D7F0D3 /* AppDelegate.swift in Sources */,
+				CE2D7B6227577B7600DD4935 /* SearchSettingsPresenter.swift in Sources */,
 				CE6A5857274F8D66006A57E6 /* FavoritesPresenter.swift in Sources */,
 				CE67103F27367BE300745683 /* IndicationViewController.swift in Sources */,
 				CE09C16C2754C66D000C32EC /* CellType.swift in Sources */,
@@ -732,6 +754,7 @@
 				CE76080F273C321400131156 /* CrewsCell.swift in Sources */,
 				CEBEA8E62750ED6C00D61679 /* Favorite+CoreDataProperties.swift in Sources */,
 				CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */,
+				CE2D7B602757793F00DD4935 /* SearchSettingsRouter.swift in Sources */,
 				CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */,
 				CEB78AEC2726D83E00D7F0D3 /* MainTabBarController.swift in Sources */,
 				CE67103D2736785300745683 /* TMDBNetworkServiceProtocol.swift in Sources */,
@@ -750,6 +773,7 @@
 				CE6A584F274F7E3B006A57E6 /* FavoritesRouter.swift in Sources */,
 				CED0E5212729AA5C001DD0F0 /* NowPlayingItem.swift in Sources */,
 				CED0E52E272AC5A3001DD0F0 /* SearchViewController.swift in Sources */,
+				CE2D7B6427577B9400DD4935 /* SearchSettingsInteractor.swift in Sources */,
 				CED0E526272AADEB001DD0F0 /* TvPopularCell.swift in Sources */,
 				CED0E534272AE707001DD0F0 /* SearchInteractor.swift in Sources */,
 				CEB78AD52726D46900D7F0D3 /* SceneDelegate.swift in Sources */,

@@ -82,6 +82,17 @@ final class SearchViewController: UIViewController {
             placeholderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -8),
             placeholderLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        
+        let addFavButton = UIBarButtonItem(
+            image: UIImage(systemName: "gear"), style: .plain,
+            target: self, action: #selector(showFilter))
+        
+        navigationItem.rightBarButtonItem = addFavButton
+        
+    }
+    
+    @objc func showFilter() {
+        presenter?.presentSettingsScreen(view: self)
     }
 }
 

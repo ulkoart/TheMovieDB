@@ -39,7 +39,7 @@ protocol TMDBNetworkServiceProtocol {
     /// - Parameters:
     ///   - query: поисковой запрос
     ///   - completion: ([SearchMovie], Error?) -> Void
-    func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void)
+    func searchMovie(query: String, includeAdult: Bool, completion: @escaping (GetSearchMovieResponse) -> Void)
     
     /// Получение детальной информации о фильме
     /// - Parameters:
