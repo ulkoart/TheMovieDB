@@ -16,10 +16,12 @@ protocol SearchInteractorProtocol: AnyObject {
 final class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchPresenterProtocol?
     
+    private let defaults = UserDefaults.standard
     private var service: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
     
     func retrieveSearchMovie(query: String) {
-        service.searchMovie(query: query) { [weak self] response in
+        let includeAdult = defaults.bool(forKey: SearchSettingsInteractor.adultFillterValue)
+        service.searchMovie(query: query, includeAdult: includeAdult) { [weak self] response in
             switch response {
             case .success(let data):
                 self?.presenter?.searchMovieSuccess(movies: data.results)

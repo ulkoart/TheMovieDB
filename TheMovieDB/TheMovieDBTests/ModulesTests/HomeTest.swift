@@ -35,9 +35,9 @@ class HomeTest: XCTestCase {
     }
     
     func testControllerProperties() throws {
-        viewController?.trends = [] 
-        viewController?.nowPlaying = []
-        viewController?.tvPopular = []
+        viewController?.tableAdapter.trends = []
+        viewController?.tableAdapter.nowPlaying = []
+        viewController?.tableAdapter.tvPopular = []
     }
     
     func testModuleNotNil() {

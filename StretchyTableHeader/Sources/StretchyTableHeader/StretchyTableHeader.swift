@@ -1,15 +1,8 @@
-//
-//  StretchyTableHeader.swift
-//  TheMovieDB
-//
-//  Created by user on 01.11.2021.
-//
-
 import UIKit
 
-final class StretchyTableHeader: UIView {
+public class StretchyTableHeader: UIView {
     
-    let imageView: UIImageView = {
+    public let imageView: UIImageView = {
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
         return $0
@@ -20,7 +13,7 @@ final class StretchyTableHeader: UIView {
     private var containerView = UIView()
     private var containerViewHeight = NSLayoutConstraint()
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         createViews()
         setViewConstraints()
@@ -54,7 +47,7 @@ final class StretchyTableHeader: UIView {
         imageViewHeight.isActive = true
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    public func scrollViewDidScroll(scrollView: UIScrollView) {
         containerViewHeight.constant = scrollView.contentInset.top
         let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
         containerView.clipsToBounds = offsetY <= 0

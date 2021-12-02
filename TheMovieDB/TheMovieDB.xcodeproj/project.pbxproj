@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,9 +17,23 @@
 		CE0C3B91274258D200BD334C /* TvSerialInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B90274258D200BD334C /* TvSerialInteractor.swift */; };
 		CE0C3B9627425D6B00BD334C /* TvSerialDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B9527425D6B00BD334C /* TvSerialDetailResponse.swift */; };
 		CE0C3B9927425E5E00BD334C /* TvSerialCreditsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0C3B9827425E5E00BD334C /* TvSerialCreditsResponse.swift */; };
+		CE0C85E72758A312006E75A8 /* HomeTableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C14C2754AA7E000C32EC /* HomeTableAdapter.swift */; };
+		CE0C85E82758A312006E75A8 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDB29D52754E83200B52228 /* SearchCell.swift */; };
+		CE0C85E92758A312006E75A8 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */; };
+		CE0C85EA2758A312006E75A8 /* SearchSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */; };
+		CE0C85EB2758A312006E75A8 /* SearchSettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */; };
+		CE0C85EC2758A312006E75A8 /* SearchSettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */; };
+		CE0C85ED2758A312006E75A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AD22726D46900D7F0D3 /* AppDelegate.swift */; };
+		CE0C85F32758A323006E75A8 /* CellDidSelectItemAtDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C1632754BB10000C32EC /* CellDidSelectItemAtDelegate.swift */; };
+		CE0C85F42758A323006E75A8 /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C1672754C63D000C32EC /* LoadMoreDelegate.swift */; };
+		CE0C85F52758A323006E75A8 /* CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C16B2754C66D000C32EC /* CellType.swift */; };
+		CE0C86122758B8C5006E75A8 /* StretchyTableHeader in Frameworks */ = {isa = PBXBuildFile; productRef = CE0C86112758B8C5006E75A8 /* StretchyTableHeader */; };
+		CE2D7B5E2757600D00DD4935 /* SearchSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */; };
+		CE2D7B602757793F00DD4935 /* SearchSettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */; };
+		CE2D7B6227577B7600DD4935 /* SearchSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */; };
+		CE2D7B6427577B9400DD4935 /* SearchSettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */; };
 		CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C127300EB900EC9D36 /* MovieRouter.swift */; };
 		CE36F3C427300F4900EC9D36 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C327300F4900EC9D36 /* MovieViewController.swift */; };
-		CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */; };
 		CE560D16273BAB4100FB5F62 /* NowPlayingMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D15273BAB4100FB5F62 /* NowPlayingMovie.swift */; };
 		CE560D18273BAB7000FB5F62 /* TvPopular.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D17273BAB7000FB5F62 /* TvPopular.swift */; };
 		CE560D1A273BABB600FB5F62 /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D19273BABB600FB5F62 /* SearchMovie.swift */; };
@@ -88,7 +102,6 @@
 		CEBDF77F274A8E2F009759D9 /* TvPopular.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D17273BAB7000FB5F62 /* TvPopular.swift */; };
 		CEBDF780274A8E2F009759D9 /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D19273BABB600FB5F62 /* SearchMovie.swift */; };
 		CEBDF781274A8E2F009759D9 /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE560D1B273BABF600FB5F62 /* Cast.swift */; };
-		CEBDF782274A8E2F009759D9 /* StretchyTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */; };
 		CEBDF783274A8E2F009759D9 /* IndicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE67103E27367BE300745683 /* IndicationViewController.swift */; };
 		CEBDF784274A8E2F009759D9 /* StatusBarStyleNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */; };
 		CEBDF785274A8E2F009759D9 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AEB2726D83E00D7F0D3 /* MainTabBarController.swift */; };
@@ -167,9 +180,13 @@
 		CE0C3B90274258D200BD334C /* TvSerialInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialInteractor.swift; sourceTree = "<group>"; };
 		CE0C3B9527425D6B00BD334C /* TvSerialDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialDetailResponse.swift; sourceTree = "<group>"; };
 		CE0C3B9827425E5E00BD334C /* TvSerialCreditsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialCreditsResponse.swift; sourceTree = "<group>"; };
+		CE0C860D2758B809006E75A8 /* StretchyTableHeader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = StretchyTableHeader; path = ../StretchyTableHeader; sourceTree = "<group>"; };
+		CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsViewController.swift; sourceTree = "<group>"; };
+		CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsRouter.swift; sourceTree = "<group>"; };
+		CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsPresenter.swift; sourceTree = "<group>"; };
+		CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsInteractor.swift; sourceTree = "<group>"; };
 		CE36F3C127300EB900EC9D36 /* MovieRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRouter.swift; sourceTree = "<group>"; };
 		CE36F3C327300F4900EC9D36 /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
-		CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StretchyTableHeader.swift; sourceTree = "<group>"; };
 		CE560D15273BAB4100FB5F62 /* NowPlayingMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingMovie.swift; sourceTree = "<group>"; };
 		CE560D17273BAB7000FB5F62 /* TvPopular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvPopular.swift; sourceTree = "<group>"; };
 		CE560D19273BABB600FB5F62 /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
@@ -241,6 +258,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0C86122758B8C5006E75A8 /* StretchyTableHeader in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +303,24 @@
 				CE0C3B8A2742567D00BD334C /* TvSerialRouter.swift */,
 			);
 			path = TvSerial;
+			sourceTree = "<group>";
+		};
+		CE0C86102758B8C5006E75A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE2D7B5C27575C7800DD4935 /* SearchSettings */ = {
+			isa = PBXGroup;
+			children = (
+				CE2D7B5D2757600D00DD4935 /* SearchSettingsViewController.swift */,
+				CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */,
+				CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */,
+				CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */,
+			);
+			path = SearchSettings;
 			sourceTree = "<group>";
 		};
 		CE36F3C027300E9200EC9D36 /* Movie */ = {
@@ -347,9 +383,11 @@
 		CEB78AC62726D46900D7F0D3 = {
 			isa = PBXGroup;
 			children = (
+				CE0C860D2758B809006E75A8 /* StretchyTableHeader */,
 				CEB78AD12726D46900D7F0D3 /* TheMovieDB */,
 				CEEF50F92749808D006D90CD /* TheMovieDBTests */,
 				CEB78AD02726D46900D7F0D3 /* Products */,
+				CE0C86102758B8C5006E75A8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,7 +461,6 @@
 		CEB78AEA2726D81A00D7F0D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CE36F3C52730592F00EC9D36 /* StretchyTableHeader.swift */,
 				CE67103E27367BE300745683 /* IndicationViewController.swift */,
 				CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */,
 				CEB78AEB2726D83E00D7F0D3 /* MainTabBarController.swift */,
@@ -530,10 +567,11 @@
 			isa = PBXGroup;
 			children = (
 				CED0E52D272AC5A3001DD0F0 /* SearchViewController.swift */,
-				CED0E533272AE707001DD0F0 /* SearchInteractor.swift */,
 				CED0E535272AE79B001DD0F0 /* SearchPresenter.swift */,
+				CED0E533272AE707001DD0F0 /* SearchInteractor.swift */,
 				CED0E52F272AC5B5001DD0F0 /* SearchRouter.swift */,
 				CE9476842754E7D000BF3CA5 /* Cells */,
+				CE2D7B5C27575C7800DD4935 /* SearchSettings */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -602,6 +640,9 @@
 			dependencies = (
 			);
 			name = TheMovieDB;
+			packageProductDependencies = (
+				CE0C86112758B8C5006E75A8 /* StretchyTableHeader */,
+			);
 			productName = TheMovieDB;
 			productReference = CEB78ACF2726D46900D7F0D3 /* TheMovieDB.app */;
 			productType = "com.apple.product-type.application";
@@ -718,9 +759,11 @@
 				CE67103527359AB000745683 /* MoviePresenter.swift in Sources */,
 				CE0C3B8E2742589500BD334C /* TvSerialPresenter.swift in Sources */,
 				CE09C14D2754AA7E000C32EC /* HomeTableAdapter.swift in Sources */,
+				CE2D7B5E2757600D00DD4935 /* SearchSettingsViewController.swift in Sources */,
 				CE09C1642754BB10000C32EC /* CellDidSelectItemAtDelegate.swift in Sources */,
 				CED0E4FC27297237001DD0F0 /* ImageLoadService.swift in Sources */,
 				CEB78AD32726D46900D7F0D3 /* AppDelegate.swift in Sources */,
+				CE2D7B6227577B7600DD4935 /* SearchSettingsPresenter.swift in Sources */,
 				CE6A5857274F8D66006A57E6 /* FavoritesPresenter.swift in Sources */,
 				CE67103F27367BE300745683 /* IndicationViewController.swift in Sources */,
 				CE09C16C2754C66D000C32EC /* CellType.swift in Sources */,
@@ -732,7 +775,7 @@
 				CE76080F273C321400131156 /* CrewsCell.swift in Sources */,
 				CEBEA8E62750ED6C00D61679 /* Favorite+CoreDataProperties.swift in Sources */,
 				CE36F3C227300EB900EC9D36 /* MovieRouter.swift in Sources */,
-				CE36F3C62730592F00EC9D36 /* StretchyTableHeader.swift in Sources */,
+				CE2D7B602757793F00DD4935 /* SearchSettingsRouter.swift in Sources */,
 				CEB78AEC2726D83E00D7F0D3 /* MainTabBarController.swift in Sources */,
 				CE67103D2736785300745683 /* TMDBNetworkServiceProtocol.swift in Sources */,
 				CEDB29D62754E83200B52228 /* SearchCell.swift in Sources */,
@@ -750,6 +793,7 @@
 				CE6A584F274F7E3B006A57E6 /* FavoritesRouter.swift in Sources */,
 				CED0E5212729AA5C001DD0F0 /* NowPlayingItem.swift in Sources */,
 				CED0E52E272AC5A3001DD0F0 /* SearchViewController.swift in Sources */,
+				CE2D7B6427577B9400DD4935 /* SearchSettingsInteractor.swift in Sources */,
 				CED0E526272AADEB001DD0F0 /* TvPopularCell.swift in Sources */,
 				CED0E534272AE707001DD0F0 /* SearchInteractor.swift in Sources */,
 				CEB78AD52726D46900D7F0D3 /* SceneDelegate.swift in Sources */,
@@ -781,6 +825,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0C85F32758A323006E75A8 /* CellDidSelectItemAtDelegate.swift in Sources */,
+				CE0C85F42758A323006E75A8 /* LoadMoreDelegate.swift in Sources */,
+				CE0C85F52758A323006E75A8 /* CellType.swift in Sources */,
+				CE0C85E72758A312006E75A8 /* HomeTableAdapter.swift in Sources */,
+				CE0C85E82758A312006E75A8 /* SearchCell.swift in Sources */,
+				CE0C85E92758A312006E75A8 /* SearchSettingsViewController.swift in Sources */,
+				CE0C85EA2758A312006E75A8 /* SearchSettingsPresenter.swift in Sources */,
+				CE0C85EB2758A312006E75A8 /* SearchSettingsInteractor.swift in Sources */,
+				CE0C85EC2758A312006E75A8 /* SearchSettingsRouter.swift in Sources */,
+				CE0C85ED2758A312006E75A8 /* AppDelegate.swift in Sources */,
 				CE9C7AF4275362220029151B /* TheMovieDB.xcdatamodeld in Sources */,
 				CE9C7AF5275362220029151B /* PersistentService.swift in Sources */,
 				CE9C7AF6275362220029151B /* CoreDataStack.swift in Sources */,
@@ -814,7 +868,6 @@
 				CEBDF77F274A8E2F009759D9 /* TvPopular.swift in Sources */,
 				CEBDF780274A8E2F009759D9 /* SearchMovie.swift in Sources */,
 				CEBDF781274A8E2F009759D9 /* Cast.swift in Sources */,
-				CEBDF782274A8E2F009759D9 /* StretchyTableHeader.swift in Sources */,
 				CEBDF783274A8E2F009759D9 /* IndicationViewController.swift in Sources */,
 				CEBDF784274A8E2F009759D9 /* StatusBarStyleNavigationController.swift in Sources */,
 				CEBDF785274A8E2F009759D9 /* MainTabBarController.swift in Sources */,
@@ -1096,6 +1149,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE0C86112758B8C5006E75A8 /* StretchyTableHeader */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StretchyTableHeader;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		CEDBC601274B846C00D80F1A /* TheMovieDB.xcdatamodeld */ = {

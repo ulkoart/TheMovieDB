@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StretchyTableHeader
 
 protocol MovieViewControllerProtocol: AnyObject {
     var presenter: MoviePresenterProtocol? { get set }

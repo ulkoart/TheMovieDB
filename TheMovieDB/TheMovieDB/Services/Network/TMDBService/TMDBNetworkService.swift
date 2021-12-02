@@ -41,7 +41,7 @@ final class TMDBNetworkService {
         case getTrending(Int)
         case getNowPlaying(Int)
         case getTvPopular(Int)
-        case searchMovie(String)
+        case searchMovie(String, Bool)
         case getMovieDetail(Int)
         case getMovieCredits(Int)
         case getTvSerialDetail(Int)
@@ -74,11 +74,12 @@ final class TMDBNetworkService {
                 return makeUrl(path: path, queryItems: queryItems)
             
             /// url для поиска фильмов
-            case .searchMovie(let query):
+            case .searchMovie(let query, let includeAdult):
                 let path = "/search/movie"
                 
                 let queryItems = [
-                    URLQueryItem(name: "query", value: query)
+                    URLQueryItem(name: "query", value: query),
+                    URLQueryItem(name: "include_adult", value: includeAdult ? "true": "false")
                 ] + Endpoints.defaultQueryItems
                 
                 return makeUrl(path: path, queryItems: queryItems)
@@ -107,7 +108,7 @@ final class TMDBNetworkService {
     }
     
     private func GETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let handler: URLSessionHandler = { data, response, _ in
@@ -164,8 +165,8 @@ extension TMDBNetworkService: TMDBNetworkServiceProtocol {
         }
     }
     
-    func searchMovie(query: String, completion: @escaping (GetSearchMovieResponse) -> Void) {
-        guard let url = Endpoints.searchMovie(query).url else { return }
+    func searchMovie(query: String, includeAdult: Bool, completion: @escaping (GetSearchMovieResponse) -> Void) {
+        guard let url = Endpoints.searchMovie(query, includeAdult).url else { return }
         GETRequest(url: url, responseType: SearchMovieResponse.self) { searchMovieResponse, error in
             guard let searchMovieResponse = searchMovieResponse else {
                 completion(.failure(error as? NetworkServiceError ?? .unknown))

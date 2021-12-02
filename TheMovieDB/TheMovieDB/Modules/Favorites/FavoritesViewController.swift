@@ -20,7 +20,6 @@ final class FavoritesViewController: UIViewController {
     var fetchedResultsController: NSFetchedResultsController<Favorite>?
     
     private let tableView: UITableView = {
-        $0.allowsSelection = false
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -36,6 +35,15 @@ final class FavoritesViewController: UIViewController {
         configure()
         setupFetchedResultsController()
         tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let navigationController = navigationController as? StatusBarStyleNavigationController else { return }
+        navigationController.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController.navigationBar.shadowImage = nil
+        navigationController.navigationBar.tintColor = .systemBlue
+        navigationController.statusBarEnterLightBackground()
     }
     
     private func setupFetchedResultsController() {
@@ -128,6 +136,7 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         }
         guard let favorite = fetchedResultsController?.object(at: indexPath) else { fatalError() }
         cell.configure(with: favorite)
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -138,5 +147,10 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             presenter?.deleteFavorite(id: Int(favorite.id))
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let seletItem = fetchedResultsController?.sections?[indexPath.section].objects?[indexPath.item] as? Favorite else { return }
+        presenter?.presentMovieScreen(from: self, for: Int(seletItem.id))
     }
 }
