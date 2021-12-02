@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import StretchyTableHeader
 
 protocol TvSerialViewControllerProtocol: AnyObject {
     var presenter: TvSerialPresenterProtocol? { get set }
