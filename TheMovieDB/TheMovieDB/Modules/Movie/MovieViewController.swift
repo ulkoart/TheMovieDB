@@ -41,7 +41,7 @@ final class MovieViewController: IndicationViewController {
     
     init(movieId: Int) {
         self.movieId = movieId
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: nil)        
     }
     
     required init?(coder: NSCoder) {

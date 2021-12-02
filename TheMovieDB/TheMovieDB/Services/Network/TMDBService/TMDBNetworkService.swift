@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Sentry
 
 final class TMDBNetworkService {
     
@@ -126,6 +127,7 @@ final class TMDBNetworkService {
                 let decodedObject = try self.decoder.decode(responseType, from: data)
                 completion(decodedObject, nil)
             } catch {
+                SentrySDK.capture(error: NetworkServiceError.badData)
                 completion(nil, NetworkServiceError.badData)
             }
         }
