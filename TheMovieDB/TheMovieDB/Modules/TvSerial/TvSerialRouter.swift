@@ -8,11 +8,11 @@
 import UIKit
 
 protocol TvSerialRouterProtocol: AnyObject {
-    static func createModule(with tvSerialId: Int) -> UIViewController
+    static func createModule(with tvSerialId: Int) -> TvSerialViewController
 }
 
 final class TvSerialRouter: TvSerialRouterProtocol {
-    static func createModule(with tvSerialId: Int) -> UIViewController {
+    static func createModule(with tvSerialId: Int) -> TvSerialViewController {
         let viewController = TvSerialViewController(tvSerialId: tvSerialId)
         let presenter = TvSerialPresenter()
         let interactor = TvSerialInteractor()

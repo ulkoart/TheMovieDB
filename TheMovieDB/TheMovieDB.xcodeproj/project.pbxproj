@@ -24,7 +24,6 @@
 		CE0C85EA2758A312006E75A8 /* SearchSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6127577B7600DD4935 /* SearchSettingsPresenter.swift */; };
 		CE0C85EB2758A312006E75A8 /* SearchSettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B6327577B9400DD4935 /* SearchSettingsInteractor.swift */; };
 		CE0C85EC2758A312006E75A8 /* SearchSettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2D7B5F2757793F00DD4935 /* SearchSettingsRouter.swift */; };
-		CE0C85ED2758A312006E75A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB78AD22726D46900D7F0D3 /* AppDelegate.swift */; };
 		CE0C85F32758A323006E75A8 /* CellDidSelectItemAtDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C1632754BB10000C32EC /* CellDidSelectItemAtDelegate.swift */; };
 		CE0C85F42758A323006E75A8 /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C1672754C63D000C32EC /* LoadMoreDelegate.swift */; };
 		CE0C85F52758A323006E75A8 /* CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE09C16B2754C66D000C32EC /* CellType.swift */; };
@@ -136,6 +135,9 @@
 		CEBEA8E52750ED6C00D61679 /* Favorite+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEA8E32750ED6C00D61679 /* Favorite+CoreDataClass.swift */; };
 		CEBEA8E62750ED6C00D61679 /* Favorite+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBEA8E42750ED6C00D61679 /* Favorite+CoreDataProperties.swift */; };
 		CECAB9242738488C00D9A673 /* StatusBarStyleNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */; };
+		CECC650F2760DAE0000BC405 /* StretchyTableHeader in Frameworks */ = {isa = PBXBuildFile; productRef = CECC650E2760DAE0000BC405 /* StretchyTableHeader */; };
+		CECC65172760E090000BC405 /* MovieTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECC65162760E090000BC405 /* MovieTest.swift */; };
+		CECC65192760E7B6000BC405 /* TvSerialTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECC65182760E7B6000BC405 /* TvSerialTest.swift */; };
 		CED0E4E62727F93C001DD0F0 /* TMDBNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4E52727F93C001DD0F0 /* TMDBNetworkService.swift */; };
 		CED0E4E92727F9B7001DD0F0 /* TrendingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4E82727F9B7001DD0F0 /* TrendingResponse.swift */; };
 		CED0E4EB2727FA2F001DD0F0 /* Trend.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED0E4EA2727FA2F001DD0F0 /* Trend.swift */; };
@@ -162,7 +164,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CEBDF724274A64E6009759D9 /* PBXContainerItemProxy */ = {
+		CECC650C2760DAC1000BC405 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CEB78AC72726D46900D7F0D3 /* Project object */;
 			proxyType = 1;
@@ -232,6 +234,9 @@
 		CEBEA8E32750ED6C00D61679 /* Favorite+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorite+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CEBEA8E42750ED6C00D61679 /* Favorite+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Favorite+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CECAB9232738488C00D9A673 /* StatusBarStyleNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarStyleNavigationController.swift; sourceTree = "<group>"; };
+		CECC65122760DB50000BC405 /* Sentry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sentry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CECC65162760E090000BC405 /* MovieTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTest.swift; sourceTree = "<group>"; };
+		CECC65182760E7B6000BC405 /* TvSerialTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvSerialTest.swift; sourceTree = "<group>"; };
 		CED0E4E52727F93C001DD0F0 /* TMDBNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBNetworkService.swift; sourceTree = "<group>"; };
 		CED0E4E82727F9B7001DD0F0 /* TrendingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingResponse.swift; sourceTree = "<group>"; };
 		CED0E4EA2727FA2F001DD0F0 /* Trend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trend.swift; sourceTree = "<group>"; };
@@ -275,6 +280,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CECC650F2760DAE0000BC405 /* StretchyTableHeader in Frameworks */,
 				CE20E2C4F98B36538F22337C /* Pods_TheMovieDBTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,7 +296,6 @@
 				030501A2079434CF0242DDE2 /* Pods-TheMovieDBTests.debug.xcconfig */,
 				61F84336BCA59C5E568145E5 /* Pods-TheMovieDBTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -330,6 +335,7 @@
 		CE0C86102758B8C5006E75A8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CECC65122760DB50000BC405 /* Sentry.framework */,
 				67CE7FAD07F0F512762B36AA /* Pods_TheMovieDB.framework */,
 				2106412DE45770EBF88007B0 /* Pods_TheMovieDBTests.framework */,
 			);
@@ -351,8 +357,8 @@
 			isa = PBXGroup;
 			children = (
 				CE36F3C327300F4900EC9D36 /* MovieViewController.swift */,
-				CE67103627359ACA00745683 /* MovieInteractor.swift */,
 				CE67103427359AB000745683 /* MoviePresenter.swift */,
+				CE67103627359ACA00745683 /* MovieInteractor.swift */,
 				CE36F3C127300EB900EC9D36 /* MovieRouter.swift */,
 			);
 			path = Movie;
@@ -644,6 +650,8 @@
 			isa = PBXGroup;
 			children = (
 				CEEF5103274A4D54006D90CD /* HomeTest.swift */,
+				CECC65162760E090000BC405 /* MovieTest.swift */,
+				CECC65182760E7B6000BC405 /* TvSerialTest.swift */,
 			);
 			path = ModulesTests;
 			sourceTree = "<group>";
@@ -682,13 +690,17 @@
 				CEEF50F42749808D006D90CD /* Sources */,
 				CEEF50F52749808D006D90CD /* Frameworks */,
 				CEEF50F62749808D006D90CD /* Resources */,
+				2B64481F505D5D0FC8D9A04A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CEBDF725274A64E6009759D9 /* PBXTargetDependency */,
+				CECC650D2760DAC1000BC405 /* PBXTargetDependency */,
 			);
 			name = TheMovieDBTests;
+			packageProductDependencies = (
+				CECC650E2760DAE0000BC405 /* StretchyTableHeader */,
+			);
 			productName = TheMovieDBTests;
 			productReference = CEEF50F82749808D006D90CD /* TheMovieDBTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -749,6 +761,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2B64481F505D5D0FC8D9A04A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TheMovieDBTests/Pods-TheMovieDBTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TheMovieDBTests/Pods-TheMovieDBTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TheMovieDBTests/Pods-TheMovieDBTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		954D295945568276A99E3030 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -918,17 +947,18 @@
 				CE0C85F42758A323006E75A8 /* LoadMoreDelegate.swift in Sources */,
 				CE0C85F52758A323006E75A8 /* CellType.swift in Sources */,
 				CE0C85E72758A312006E75A8 /* HomeTableAdapter.swift in Sources */,
+				CECC65172760E090000BC405 /* MovieTest.swift in Sources */,
 				CE0C85E82758A312006E75A8 /* SearchCell.swift in Sources */,
 				CE0C85E92758A312006E75A8 /* SearchSettingsViewController.swift in Sources */,
 				CE0C85EA2758A312006E75A8 /* SearchSettingsPresenter.swift in Sources */,
 				CE0C85EB2758A312006E75A8 /* SearchSettingsInteractor.swift in Sources */,
 				CE0C85EC2758A312006E75A8 /* SearchSettingsRouter.swift in Sources */,
-				CE0C85ED2758A312006E75A8 /* AppDelegate.swift in Sources */,
 				CE9C7AF4275362220029151B /* TheMovieDB.xcdatamodeld in Sources */,
 				CE9C7AF5275362220029151B /* PersistentService.swift in Sources */,
 				CE9C7AF6275362220029151B /* CoreDataStack.swift in Sources */,
 				CE9C7AF7275362220029151B /* Favorite+CoreDataClass.swift in Sources */,
 				CE9C7AF8275362220029151B /* Favorite+CoreDataProperties.swift in Sources */,
+				CECC65192760E7B6000BC405 /* TvSerialTest.swift in Sources */,
 				CE9C7AEF2753614B0029151B /* FavoritesViewController.swift in Sources */,
 				CE9C7AF02753614B0029151B /* FavoritesInteractor.swift in Sources */,
 				CE9C7AF12753614B0029151B /* FavoritesPresenter.swift in Sources */,
@@ -994,10 +1024,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CEBDF725274A64E6009759D9 /* PBXTargetDependency */ = {
+		CECC650D2760DAC1000BC405 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CEB78ACE2726D46900D7F0D3 /* TheMovieDB */;
-			targetProxy = CEBDF724274A64E6009759D9 /* PBXContainerItemProxy */;
+			targetProxy = CECC650C2760DAC1000BC405 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1245,6 +1275,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		CE0C86112758B8C5006E75A8 /* StretchyTableHeader */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StretchyTableHeader;
+		};
+		CECC650E2760DAE0000BC405 /* StretchyTableHeader */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StretchyTableHeader;
 		};

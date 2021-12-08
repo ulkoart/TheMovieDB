@@ -9,6 +9,8 @@ import Foundation
 
 protocol MovieInteractorProtocol: AnyObject {
     var presenter: MoviePresenterProtocol? { get set }
+    var networkService: TMDBNetworkServiceProtocol? { get set }
+    
     func retrieveData(movieId: Int)
     func changeFavorite(movieDetail: MovieDetailResponse, movieImageData: Data?)
     func movieIsFavorite(id: Int) -> Bool
@@ -17,7 +19,7 @@ protocol MovieInteractorProtocol: AnyObject {
 final class MovieInteractor: MovieInteractorProtocol {
     weak var presenter: MoviePresenterProtocol?
     
-    private let networkService: TMDBNetworkServiceProtocol = TMDBNetworkService.shared
+    var networkService: TMDBNetworkServiceProtocol? = TMDBNetworkService.shared
     private let persistentService: PersistentService = PersistentService.shared
     
     private let dispatchGroup = DispatchGroup()
@@ -44,10 +46,10 @@ final class MovieInteractor: MovieInteractorProtocol {
     
     private func retrieveMovieData(movieId: Int) {
         dispatchGroup.enter()
-        networkService.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
+        networkService?.getMovieDetail(movieId: movieId) { self.processGetMovieDetail($0) }
         
         dispatchGroup.enter()
-        networkService.getMovieCredits(movieId: movieId) { self.processGetMovieCredits($0) }
+        networkService?.getMovieCredits(movieId: movieId) { self.processGetMovieCredits($0) }
         
         dispatchGroup.notify(queue: .main) { [weak self] in
             guard let movieDetail = self?.movieDetail else { return }
