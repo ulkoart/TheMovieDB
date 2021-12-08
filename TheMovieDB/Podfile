@@ -11,6 +11,7 @@ target 'TheMovieDB' do
   target 'TheMovieDBTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.5.4'
   end
 
 end
